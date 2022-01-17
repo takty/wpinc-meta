@@ -3,13 +3,13 @@
  * Field (JS)
  *
  * @author Takuto Yanagida
- * @version 2019-03-10
+ * @version 2022-01-17
  *
  */
 
 
-function stinc_field_media_picker_initialize_admin(key) {
-	const NS        = 'stinc-field-media-picker';
+function wpinc_meta_media_picker_initialize(key) {
+	const NS        = 'wpinc-meta-media-picker';
 	const CLS_SEL   = NS + '-select';
 	const CLS_DEL   = NS + '-delete';
 	const ID_BODY   = key + '-body';
