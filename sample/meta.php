@@ -1,13 +1,13 @@
 <?php
 /**
- * Fields
+ * Post Meta
  *
- * @package Stinc
+ * @package Sample
  * @author Takuto Yanagida
  * @version 2022-01-25
  */
 
-namespace st\meta;
+namespace sample;
 
 require_once __DIR__ . '/meta/field.php';
 require_once __DIR__ . '/meta/key-postfix.php';
