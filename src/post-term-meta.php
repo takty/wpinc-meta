@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2022-01-17
+ * @version 2022-01-26
  */
 
 namespace wpinc\meta\post_term_meta;
@@ -173,7 +173,7 @@ function _get_term_ids( array $postarr ): array {
 		return array();
 	}
 	$ret = array();
-	foreach ( $postarr['tax_input'] as $tax => $ids ) {
+	foreach ( $postarr['tax_input'] as $tx => $ids ) {
 		if ( count( $ids ) <= 1 ) {
 			continue;
 		}
