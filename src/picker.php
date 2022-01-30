@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2022-01-17
+ * @version 2022-01-30
  */
 
 namespace wpinc\meta;
@@ -90,8 +90,8 @@ function output_date_picker_row( string $label, string $key, $val ): void {
 	wp_enqueue_style( 'flatpickr' );
 	wp_enqueue_style( 'wpinc-meta-field' );
 
-	$lang = \st\get_user_lang();
-	$val  = $val ?? '';
+	$val = $val ?? '';
+	$loc = strtolower( str_replace( '_', '-', $args['locale'] ) );
 	?>
 	<div class="wpinc-meta-field-single">
 		<label>
@@ -101,7 +101,7 @@ function output_date_picker_row( string $label, string $key, $val ): void {
 				<a class="button" title="clear" data-clear>X</a>
 			</span>
 		</label>
-		<script>flatpickr('#<?php echo esc_attr( $key ); ?>_row', { locale: '<?php echo esc_attr( $lang ); ?>', wrap: true });</script>
+		<script>flatpickr('#<?php echo esc_attr( $key ); ?>_row', { locale: '<?php echo esc_html( $loc ); ?>', wrap: true });</script>
 	</div>
 	<?php
 }
