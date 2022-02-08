@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2022-01-17
+ * @version 2022-02-09
  */
 
 namespace wpinc\meta;
@@ -21,19 +21,19 @@ require_once __DIR__ . '/assets/asset-url.php';
  * }
  */
 function initialize( array $args = array() ): void {
-	$url_to = untrailingslashit( $args['url_to'] ?? get_file_uri( __DIR__ ) );
+	$url_to = untrailingslashit( $args['url_to'] ?? \wpinc\get_file_uri( __DIR__ ) );
 
 	add_action(
 		'admin_enqueue_scripts',
 		function () use ( $url_to ) {
-			wp_register_script( 'picker-link', abs_url( $url_to, './assets/lib/picker-link.min.js' ), array(), 1.0, false );
-			wp_register_script( 'picker-media', abs_url( $url_to, './assets/lib/picker-media.min.js' ), array(), 1.0, false );
-			wp_register_script( 'flatpickr', abs_url( $url_to, './assets/lib/flatpickr.min.js' ), array(), 1.0, false );
-			wp_register_script( 'flatpickr.l10n.ja', abs_url( $url_to, './assets/lib/flatpickr.l10n.ja.min.js' ), array(), 1.0, false );
-			wp_register_style( 'flatpickr', abs_url( $url_to, './assets/lib/flatpickr.min.css' ), array(), 1.0 );
+			wp_register_script( 'picker-link', \wpinc\abs_url( $url_to, './assets/lib/picker-link.min.js' ), array(), 1.0, false );
+			wp_register_script( 'picker-media', \wpinc\abs_url( $url_to, './assets/lib/picker-media.min.js' ), array(), 1.0, false );
+			wp_register_script( 'flatpickr', \wpinc\abs_url( $url_to, './assets/lib/flatpickr.min.js' ), array(), 1.0, false );
+			wp_register_script( 'flatpickr.l10n.ja', \wpinc\abs_url( $url_to, './assets/lib/flatpickr.l10n.ja.min.js' ), array(), 1.0, false );
+			wp_register_style( 'flatpickr', \wpinc\abs_url( $url_to, './assets/lib/flatpickr.min.css' ), array(), 1.0 );
 
-			wp_register_script( 'wpinc-meta-field', abs_url( $url_to, './assets/field.min.js' ), array( 'picker-media' ), 1.0, false );
-			wp_register_style( 'wpinc-meta-field', abs_url( $url_to, './assets/field.min.css' ), array(), 1.0 );
+			wp_register_script( 'wpinc-meta-field', \wpinc\abs_url( $url_to, './assets/js/field.min.js' ), array( 'picker-media' ), 1.0, false );
+			wp_register_style( 'wpinc-meta-field', \wpinc\abs_url( $url_to, './assets/css/field.min.css' ), array(), 1.0 );
 		}
 	);
 }
