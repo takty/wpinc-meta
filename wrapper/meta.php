@@ -4,10 +4,10 @@
  *
  * @package Sample
  * @author Takuto Yanagida
- * @version 2022-02-07
+ * @version 2022-03-04
  */
 
-namespace sample {
+namespace sample\meta {
 	require_once __DIR__ . '/meta/field.php';
 	require_once __DIR__ . '/meta/key-postfix.php';
 	require_once __DIR__ . '/meta/multiple.php';
