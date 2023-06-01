@@ -1,60 +1,74 @@
 /**
- *
  * Field (SCSS)
  *
  * @author Takuto Yanagida
- * @version 2022-10-27
- *
+ * @version 2023-06-01
  */
-
 
 $breakpoint-single-wrap: 45rem;
 
-
-.wpinc-meta-field-single {
+.wpinc-meta-field-row,
+.wpinc-meta-media-picker,
+.wpinc-meta-date-picker {
 	&:not(:first-child) {
-		margin-top: 0.75rem;
+		margin-block-start: 0.75rem;
 	}
-	> label {
-		display        : flex;
-		align-items    : flex-start;
-		justify-content: space-between;
-		flex-wrap      : wrap;
 
-		> span:not([class]) {
-			padding-block: 0.35rem 0.25rem;
+	display        : flex;
+	align-items    : center;
+	justify-content: space-between;
+	flex-wrap      : wrap;
+	gap            : 0 0.5rem;
 
-			width    : calc((#{$breakpoint-single-wrap} - 100%) * 1000);
-			min-width: 29%;
-			max-width: 100%;
+	> :is(label, .label) {
+		width    : calc((#{$breakpoint-single-wrap} - 100%) * 9999);
+		min-width: 30%;
+		max-width: 100%;
 
-			color      : #666;
-			font-weight: bold;
-		}
-		> input:not([type='checkbox']),
+		color      : #666;
+		font-weight: bold;
+
+		padding-block: 0.25rem;
+	}
+
+	> div {
+		flex-grow: 1;
+	}
+}
+
+// ----
+
+.wpinc-meta-field-row {
+	> div {
+		> input:not([type='checkbox']):not(.flatpickr-input),
 		> textarea,
 		> select {
 			padding-block: 0.25rem;
-
-			width    : calc((#{$breakpoint-single-wrap} - 100%) * 1000);
-			min-width: 70%;
-			max-width: 100%;
+			width        : 100%;
 		}
 	}
-	&.checkbox > label {
-		align-items: baseline;
-		flex-wrap  : nowrap;
-		gap        : 0.65rem;
 
+	&.textarea {
+		align-items: flex-start;
+	}
+
+	&.checkbox {
 		> * {
 			padding-block: 0.25rem;
+		}
+		> div {
+			display      : flex;
+			align-items  : center;
+			gap          : 0.5rem;
 
-			:last-child {
-				flex-grow: 1;
+			input {
+				margin: 0;
 			}
 		}
 	}
 }
+
+// ----
 
 .wpinc-meta-field-separator {
 	margin          : 1.5rem -12px;
@@ -62,62 +76,40 @@ $breakpoint-single-wrap: 45rem;
 	background-color: #f1f1f1;
 }
 
-.wpinc-meta-field-rich-editor {
-	margin-top: 1.5rem;
-	&:not(:last-child) {
-		margin-bottom: 2rem;
+.wpinc-meta-field-group {
+	&:not(:first-child) {
+		margin-block-start: 0.5rem;
 	}
+}
+
+// ----
+
+.wpinc-meta-field-rich-editor {
+	margin-block-start: 0.75rem;
+	&:not(:first-child) {
+		margin-block-start: 1.5rem;
+	}
+	&:not(:last-child) {
+		margin-block-end: 1.5rem;
+	}
+
 	> label {
-		display       : block;
-		padding-bottom: 0.5rem;
-		color         : #666;
-		font-weight   : bold;
+		display      : block;
+		padding-block: 0 0.5rem;
+		color        : #666;
+		font-weight  : bold;
 	}
 	&.no-media-button > label {
 		margin-bottom: -2rem;
 	}
 }
 
-.wpinc-meta-field-group {
-	margin-top: 0.5rem;
-}
-
-.wpinc-meta-field-title {
-	> input {  // Same as the default title style of Wordpress
-		width  : 100%;
-		height : 1.7em;
-		margin : 0 0 6px;
-		padding: 3px 8px;
-
-		font-size       : 1.7em;
-		line-height     : 100%;
-		background-color: #fff;
-		outline         : none;
-	}
-}
+// ----
 
 .wpinc-meta-media-picker {
-	margin-top: 0.75rem;
+	align-items: flex-start;
 
-	display        : flex;
-	align-items    : flex-start;
-	justify-content: space-between;
-	flex-wrap      : wrap;
-
-	> label {
-		width    : calc((#{$breakpoint-single-wrap} - 100%) * 1000);
-		min-width: 29%;
-		max-width: 100%;
-
-		padding-block: 0.35rem 0.25rem;
-		color        : #666;
-		font-weight  : bold;
-	}
 	> div {
-		width    : calc((#{$breakpoint-single-wrap} - 100%) * 1000);
-		min-width: 70%;
-		max-width: 100%;
-
 		display: flex;
 
 		> div:first-child {
@@ -141,10 +133,132 @@ $breakpoint-single-wrap: 45rem;
 	&.button:hover {
 		width : 4rem;
 		height: 4rem;
+		@media screen and (max-width: 782px) {
+			width : 4.5rem;
+			height: 4.5rem;
+		}
 
 		background-repeat  : no-repeat;
 		background-position: center center;
 		background-size    : contain;
 		background-color   : #f7f7f7;
+	}
+}
+
+.wpinc-meta-date-picker {
+	> div {
+		display: flex;
+		gap    : 0.5rem;
+	}
+
+	@media screen and (max-width: 782px) {
+		a.button {
+			margin: 0;
+		}
+	}
+}
+
+
+// -----------------------------------------------------------------------------
+
+
+.wpinc-meta-field-tr.checkbox {
+	@media screen and (max-width: 782px) {
+		td {
+			padding-block-start: 8px;
+		}
+	}
+}
+
+.wpinc-meta-field-separator-tr {
+	:is(th, td) {
+		position: relative;
+		&::after {
+			content   : '';
+			position  : absolute;
+			inset     : 50% 0 auto;
+			height    : 0;
+			border-top: solid 1px #666;
+		}
+	}
+	td {
+		inset-inline-end: 5%;
+	}
+	@media screen and (max-width: 782px) {
+		th {
+			padding-block: 1rem;
+		}
+		td { display: none; }
+	}
+}
+
+.wpinc-meta-field-rich-editor-tr {
+	td > div {
+		width: 95%;
+		@media screen and (max-width: 782px) {
+			width: 100%;
+		}
+	}
+}
+
+// ----
+
+.wpinc-meta-field-tr-multiple {
+	&:not(.wpinc-meta-field-tr-first) {
+		:is(td, th) {
+			padding-block-start: 5px;
+		}
+	}
+	&:not(.wpinc-meta-field-tr-last) {
+		:is(td, th) {
+			padding-block-end: 5px;
+		}
+	}
+}
+
+// ----
+
+.wpinc-meta-media-picker-tr {
+	td > div {
+		display: flex;
+		width  : 95%;
+		@media screen and (max-width: 782px) {
+			width: 100%;
+		}
+
+		> div:first-child {
+			margin-right: 0.5rem;
+		}
+		> div:last-child {
+			display        : flex;
+			align-items    : flex-end;
+			justify-content: space-between;
+			flex-direction : column;
+			flex-grow      : 1;
+
+			input { width: 100%; }
+		}
+	}
+}
+
+.wpinc-meta-date-picker-tr {
+	td {
+		display: flex;
+		gap    : 0.5rem;
+	}
+
+	input[type=text] {
+		width: auto;
+	}
+
+	@media screen and (max-width: 782px) {
+		td input[type=text] {
+			display: unset;
+			width  : auto;
+		}
+
+		a.button {
+			margin: 0;
+		}
 	}
 }

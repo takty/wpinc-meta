@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2022-01-17
+ * @version 2023-05-31
  */
 
 namespace wpinc\meta;
@@ -70,6 +70,18 @@ function get_multiple_post_meta_from_env( string $base_key, array $keys ): array
 		return $ret;
 	}
 	return array();
+}
+
+/**
+ * Retrieve multiple term meta from environ variable $_POST.
+ * This function is an alias of get_multiple_post_meta_from_env.
+ *
+ * @param string $base_key Base key of variable names.
+ * @param array  $keys     Keys of variable names.
+ * @return array The meta values.
+ */
+function get_multiple_term_meta_from_env( string $base_key, array $keys ): array {
+	return get_multiple_post_meta_from_env( $base_key, $keys );
 }
 
 
@@ -182,4 +194,86 @@ function set_multiple_post_meta( int $post_id, string $base_key, array $vals, ?a
 	}
 	$json = wp_json_encode( $vals, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
 	update_post_meta( $post_id, $base_key, addslashes( $json ) );  // Because the meta value is passed through the stripslashes() function upon being stored.
+}
+
+/**
+ * Retrieve multiple term meta values.
+ *
+ * @param int         $term_id     Term ID.
+ * @param string      $base_key    Base key of variable names.
+ * @param array       $keys        Keys of variable names.
+ * @param string|null $special_key (Optional) Special key.
+ * @return array The meta values.
+ */
+function get_multiple_term_meta( int $term_id, string $base_key, array $keys, ?string $special_key = null ): array {
+	$ret = array();
+	$val = get_term_meta( $term_id, $base_key, true );
+
+	if ( $special_key ) {
+		$skv = null;
+		$ret = json_decode( $val, true );
+		if ( is_array( $ret ) ) {
+			if ( isset( $ret['#'] ) ) {
+				$skv = $ret[ $special_key ] ?? null;
+				$ret = $ret['#'];
+			}
+		} else {
+			$ret = array();
+		}
+		$ret[ $special_key ] = $skv;
+	} else {
+		$ret = json_decode( $val, true );
+		if ( ! is_array( $ret ) ) {
+			$ret = array();
+		}
+	}
+	return $ret;
+}
+
+/**
+ * Stores multiple term meta values.
+ *
+ * @param int         $term_id     Term ID.
+ * @param string      $base_key    Base key of variable names.
+ * @param array       $vals        Values.
+ * @param array       $keys        Keys of variable names.
+ * @param string|null $special_key (Optional) Special key.
+ */
+function set_multiple_term_meta( int $term_id, string $base_key, array $vals, ?array $keys = null, ?string $special_key = null ): void {
+	$val = get_term_meta( $term_id, $base_key, true );
+
+	if ( $special_key ) {
+		$skv = $vals[ $special_key ] ?? null;
+		unset( $vals[ $special_key ] );
+
+		if ( 0 === count( $vals ) && null === $skv ) {
+			delete_term_meta( $term_id, $base_key );
+		} else {
+			foreach ( $vals as &$val ) {
+				$it = array();
+				foreach ( $keys as $key ) {
+					$it[ $key ] = $val[ $key ];
+				}
+				$val = $it;
+			}
+			$vals = array(
+				'#'          => $vals,
+				$special_key => $skv,
+			);
+		}
+	} else {
+		if ( 0 === count( $vals ) ) {
+			delete_term_meta( $term_id, $base_key );
+		} else {
+			foreach ( $vals as &$val ) {
+				$it = array();
+				foreach ( $keys as $key ) {
+					$it[ $key ] = $val[ $key ];
+				}
+				$val = $it;
+			}
+		}
+	}
+	$json = wp_json_encode( $vals, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
+	update_term_meta( $term_id, $base_key, addslashes( $json ) );  // Because the meta value is passed through the stripslashes() function upon being stored.
 }

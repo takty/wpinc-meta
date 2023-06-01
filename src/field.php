@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2022-10-27
+ * @version 2023-05-31
  */
 
 namespace wpinc\meta;
@@ -43,65 +43,66 @@ function initialize( array $args = array() ): void {
 
 
 /**
- * Adds a separator.
+ * Adds a separator to post.
  */
-function add_separator() {
-	output_separator();
+function add_separator_to_post() {
+	output_post_separator();
 }
 
 /**
- * Adds an input.
+ * Adds an input to post.
  *
  * @param int    $post_id Post ID.
  * @param string $key     Meta key.
  * @param string $label   Label.
  * @param string $type    Input type. Default 'text'.
  */
-function add_input( int $post_id, string $key, string $label, string $type = 'text' ): void {
+function add_input_to_post( int $post_id, string $key, string $label, string $type = 'text' ): void {
 	$val = get_post_meta( $post_id, $key, true );
-	output_input_row( $label, $key, $val, $type );
+	output_post_input_row( $label, $key, $val, $type );
 }
 
 /**
- * Adds a textarea.
+ * Adds a textarea to post.
  *
  * @param int    $post_id Post ID.
  * @param string $key     Meta key.
  * @param string $label   Label.
  * @param int    $rows    Rows attribute. Default 2.
  */
-function add_textarea( int $post_id, string $key, string $label, int $rows = 2 ): void {
+function add_textarea_to_post( int $post_id, string $key, string $label, int $rows = 2 ): void {
 	$val = get_post_meta( $post_id, $key, true );
-	output_textarea_row( $label, $key, $val, $rows );
+	output_post_textarea_row( $label, $key, $val, $rows );
 }
 
 /**
- * Adds a rich editor.
+ * Adds a rich editor to post.
  *
  * @param int    $post_id  Post ID.
  * @param string $key      Meta key.
  * @param string $label    Label.
  * @param array  $settings Settings for wp_editor.
  */
-function add_rich_editor( int $post_id, string $key, string $label, array $settings = array() ): void {
+function add_rich_editor_to_post( int $post_id, string $key, string $label, array $settings = array() ): void {
 	$val = get_post_meta( $post_id, $key, true );
-	output_rich_editor_row( $label, $key, $val, $settings );
+	output_post_rich_editor_row( $label, $key, $val, $settings );
 }
 
 /**
- * Adds a checkbox.
+ * Adds a checkbox to post.
  *
  * @param int    $post_id Post ID.
  * @param string $key     Meta key.
  * @param string $label   Label.
+ * @param string $title   Title of the checkbox.
  */
-function add_checkbox( int $post_id, string $key, string $label ): void {
+function add_checkbox_to_post( int $post_id, string $key, string $label, string $title = '' ): void {
 	$val = get_post_meta( $post_id, $key, true );
-	output_checkbox_row( $label, $key, 'on' === $val );
+	output_post_checkbox_row( $label, $key, 'on' === $val, $title );
 }
 
 /**
- * Adds a term select.
+ * Adds a term select to post.
  *
  * @param int    $post_id  Post ID.
  * @param string $key      Meta key.
@@ -109,13 +110,13 @@ function add_checkbox( int $post_id, string $key, string $label ): void {
  * @param string $taxonomy Taxonomy slug.
  * @param string $field    Term field.
  */
-function add_term_select( int $post_id, string $key, string $label, string $taxonomy, string $field = 'slug' ): void {
+function add_term_select_to_post( int $post_id, string $key, string $label, string $taxonomy, string $field = 'slug' ): void {
 	$val = get_post_meta( $post_id, $key, true );
-	output_term_select_row( $label, $key, $taxonomy, $val, $field );
+	output_post_term_select_row( $label, $key, $taxonomy, $val, $field );
 }
 
 /**
- * Adds a related term select.
+ * Adds a related term select to post.
  *
  * @param int    $post_id  Post ID.
  * @param string $key      Meta key.
@@ -123,10 +124,73 @@ function add_term_select( int $post_id, string $key, string $label, string $taxo
  * @param string $taxonomy Taxonomy slug.
  * @param string $field    Term field.
  */
-function add_related_term_select( int $post_id, string $key, string $label, string $taxonomy, string $field = 'slug' ): void {
+function add_related_term_select_to_post( int $post_id, string $key, string $label, string $taxonomy, string $field = 'slug' ): void {
 	$val   = get_post_meta( $post_id, $key, true );
 	$terms = get_the_terms( $post_id, $taxonomy );
-	output_term_select_row( $label, $key, $terms, $val, $field );
+	output_post_term_select_row( $label, $key, $terms, $val, $field );
+}
+
+
+// - - - - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - -.
+
+
+/**
+ * Adds a separator to term.
+ */
+function add_separator_to_term() {
+	output_term_separator();
+}
+
+/**
+ * Adds an input to term.
+ *
+ * @param int    $term_id Term ID.
+ * @param string $key     Meta key.
+ * @param string $label   Label.
+ * @param string $type    Input type. Default 'text'.
+ */
+function add_input_to_term( int $term_id, string $key, string $label, string $type = 'text' ): void {
+	$val = get_term_meta( $term_id, $key, true );
+	output_term_input_row( $label, $key, $val, $type );
+}
+
+/**
+ * Adds a textarea to term.
+ *
+ * @param int    $term_id Term ID.
+ * @param string $key     Meta key.
+ * @param string $label   Label.
+ * @param int    $rows    Rows attribute. Default 2.
+ */
+function add_textarea_to_term( int $term_id, string $key, string $label, int $rows = 2 ): void {
+	$val = get_term_meta( $term_id, $key, true );
+	output_term_textarea_row( $label, $key, $val, $rows );
+}
+
+/**
+ * Adds a rich editor to term.
+ *
+ * @param int    $term_id  Term ID.
+ * @param string $key      Meta key.
+ * @param string $label    Label.
+ * @param array  $settings Settings for wp_editor.
+ */
+function add_rich_editor_to_term( int $term_id, string $key, string $label, array $settings = array() ): void {
+	$val = get_term_meta( $term_id, $key, true );
+	output_term_rich_editor_row( $label, $key, $val, $settings );
+}
+
+/**
+ * Adds a checkbox to term.
+ *
+ * @param int    $term_id Term ID.
+ * @param string $key     Meta key.
+ * @param string $label   Label.
+ * @param string $title   Title of the checkbox.
+ */
+function add_checkbox_to_term( int $term_id, string $key, string $label, string $title = '' ): void {
+	$val = get_term_meta( $term_id, $key, true );
+	output_term_checkbox_row( $label, $key, 'on' === $val, $title );
 }
 
 
@@ -134,9 +198,9 @@ function add_related_term_select( int $post_id, string $key, string $label, stri
 
 
 /**
- * Outputs a separator.
+ * Outputs a separator to post.
  */
-function output_separator(): void {
+function output_post_separator(): void {
 	wp_enqueue_style( 'wpinc-meta-field' );
 	?>
 	<hr class="wpinc-meta-field-separator">
@@ -144,56 +208,56 @@ function output_separator(): void {
 }
 
 /**
- * Outputs an input row.
+ * Outputs an input row to post.
  *
  * @param string $label Label.
  * @param string $key   Meta key.
  * @param mixed  $val   Current value.
  * @param string $type  Input type. Default 'text'.
  */
-function output_input_row( string $label, string $key, $val, string $type = 'text' ): void {
+function output_post_input_row( string $label, string $key, $val, string $type = 'text' ): void {
 	wp_enqueue_style( 'wpinc-meta-field' );
 	$val = $val ?? '';
 	?>
-	<div class="wpinc-meta-field-single <?php echo esc_attr( $type ); ?>">
-		<label>
-			<span><?php echo esc_html( $label ); ?></span>
+	<div class="wpinc-meta-field-row <?php echo esc_attr( $type ); ?>">
+		<label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label>
+		<div>
 			<input <?php name_id( $key ); ?> type="<?php echo esc_attr( $type ); ?>" value="<?php echo esc_attr( $val ); ?>" size="64">
-		</label>
+		</div>
 	</div>
 	<?php
 }
 
 /**
- * Outputs a textarea row.
+ * Outputs a textarea row to post.
  *
  * @param string $label Label.
  * @param string $key   Meta key.
  * @param mixed  $val   Current value.
  * @param int    $rows  Rows attribute. Default 2.
  */
-function output_textarea_row( string $label, string $key, $val, int $rows = 2 ): void {
+function output_post_textarea_row( string $label, string $key, $val, int $rows = 2 ): void {
 	wp_enqueue_style( 'wpinc-meta-field' );
 	$val = $val ?? '';
 	?>
-	<div class="wpinc-meta-field-single textarea">
-		<label>
-			<span><?php echo esc_html( $label ); ?></span>
-			<textarea <?php name_id( $key ); ?> cols="64" rows="<?php echo esc_attr( $rows ); ?>"><?php echo esc_attr( $val ); ?></textarea>
-		</label>
+	<div class="wpinc-meta-field-row textarea">
+		<label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label>
+		<div>
+			<textarea <?php name_id( $key ); ?> cols="64" rows="<?php echo esc_attr( $rows ); ?>"><?php echo esc_textarea( $val ); ?></textarea>
+		</div>
 	</div>
 	<?php
 }
 
 /**
- * Outputs a rich editor row.
+ * Outputs a rich editor row to post.
  *
  * @param string $label    Label.
  * @param string $key      Meta key.
  * @param mixed  $val      Current value.
  * @param array  $settings Settings for wp_editor.
  */
-function output_rich_editor_row( string $label, string $key, $val, array $settings = array() ): void {
+function output_post_rich_editor_row( string $label, string $key, $val, array $settings = array() ): void {
 	wp_enqueue_style( 'wpinc-meta-field' );
 	$cls = '';
 	if ( isset( $settings['media_buttons'] ) && false === $settings['media_buttons'] ) {
@@ -201,33 +265,37 @@ function output_rich_editor_row( string $label, string $key, $val, array $settin
 	}
 	?>
 	<div class="wpinc-meta-field-rich-editor<?php echo esc_attr( $cls ); ?>">
-		<label><?php echo esc_html( $label ); ?></label>
+		<label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label>
 		<?php wp_editor( $val, $key, $settings ); ?>
 	</div>
 	<?php
 }
 
 /**
- * Outputs a checkbox row.
+ * Outputs a checkbox row to post.
  *
  * @param string $label   Label.
  * @param string $key     Meta key.
  * @param bool   $checked Current value. Default false.
+ * @param string $title   Title of the checkbox.
  */
-function output_checkbox_row( string $label, string $key, bool $checked = false ): void {
+function output_post_checkbox_row( string $label, string $key, bool $checked = false, string $title = '' ): void {
 	wp_enqueue_style( 'wpinc-meta-field' );
 	?>
-	<div class="wpinc-meta-field-single checkbox">
-		<label>
-			<span class="checkbox"><input <?php name_id( $key ); ?> type="checkbox" <?php echo esc_attr( $checked ? 'checked' : '' ); ?>></span>
-			<span><?php echo esc_html( $label ); ?></span>
-		</label>
+	<div class="wpinc-meta-field-row checkbox">
+		<span class="label" for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></span>
+		<div>
+			<input <?php name_id( $key ); ?> type="checkbox" <?php echo esc_attr( $checked ? 'checked' : '' ); ?>>
+	<?php if ( ! empty( $title ) ) : ?>
+			<label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $title ); ?></label>
+	<?php endif; ?>
+		</div>
 	</div>
 	<?php
 }
 
 /**
- * Outputs a term select row.
+ * Outputs a term select row to post.
  *
  * @param string            $label             Label.
  * @param string            $key               Meta key.
@@ -235,17 +303,17 @@ function output_checkbox_row( string $label, string $key, bool $checked = false 
  * @param string            $val               Current value.
  * @param string            $field             Term field.
  */
-function output_term_select_row( string $label, string $key, $taxonomy_or_terms, $val, string $field = 'slug' ): void {
+function output_post_term_select_row( string $label, string $key, $taxonomy_or_terms, $val, string $field = 'slug' ): void {
 	wp_enqueue_style( 'wpinc-meta-field' );
 	$terms = is_array( $taxonomy_or_terms ) ? $taxonomy_or_terms : get_terms( $taxonomy_or_terms );
 	if ( ! is_array( $terms ) ) {
 		$terms = array();
 	}
 	?>
-	<div class="wpinc-meta-field-single select">
-		<label>
-			<span><?php echo esc_html( $label ); ?></span>
-			<select name="<?php echo esc_attr( $key ); ?>">
+	<div class="wpinc-meta-field-row select">
+		<label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label>
+		<div>
+			<select <?php name_id( $key ); ?>">
 	<?php
 	foreach ( $terms as $t ) {
 		$name = $t->name;
@@ -254,7 +322,106 @@ function output_term_select_row( string $label, string $key, $taxonomy_or_terms,
 	}
 	?>
 			</select>
-		</label>
+		</div>
 	</div>
+	<?php
+}
+
+
+// - - - - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - -.
+
+
+/**
+ * Outputs a separator to term.
+ */
+function output_term_separator(): void {
+	wp_enqueue_style( 'wpinc-meta-field' );
+	?>
+	<tr class="form-field wpinc-meta-field-separator-tr">
+		<th></th><td></td>
+	</tr>
+	<?php
+}
+
+/**
+ * Outputs an input row to term.
+ *
+ * @param string $label Label.
+ * @param string $key   Meta key.
+ * @param mixed  $val   Current value.
+ * @param string $type  Input type. Default 'text'.
+ */
+function output_term_input_row( string $label, string $key, $val, string $type = 'text' ): void {
+	wp_enqueue_style( 'wpinc-meta-field' );
+	$val = $val ?? '';
+	?>
+	<tr class="form-field wpinc-meta-field-tr <?php echo esc_attr( $type ); ?>">
+		<th scope="row"><label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label></th>
+		<td><input type="<?php echo esc_attr( $type ); ?>" <?php name_id( $key ); ?> size="40" value="<?php echo esc_attr( $val ); ?>"></td>
+	</tr>
+	<?php
+}
+
+/**
+ * Outputs a textarea row to term.
+ *
+ * @param string $label Label.
+ * @param string $key   Meta key.
+ * @param mixed  $val   Current value.
+ * @param int    $rows  Rows attribute. Default 2.
+ */
+function output_term_textarea_row( string $label, string $key, $val, int $rows = 2 ): void {
+	wp_enqueue_style( 'wpinc-meta-field' );
+	$val = $val ?? '';
+	?>
+	<tr class="form-field wpinc-meta-field-tr textarea">
+		<th scope="row"><label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label></th>
+		<td><textarea <?php name_id( $key ); ?> rows="<?php echo esc_attr( $rows ); ?>" cols="50" class="large-text"><?php echo esc_textarea( $val ); ?></textarea></td>
+	</tr>
+	<?php
+}
+
+/**
+ * Outputs a rich editor row to term.
+ *
+ * @param string $label    Label.
+ * @param string $key      Meta key.
+ * @param mixed  $val      Current value.
+ * @param array  $settings Settings for wp_editor.
+ */
+function output_term_rich_editor_row( string $label, string $key, $val, array $settings = array() ): void {
+	wp_enqueue_style( 'wpinc-meta-field' );
+	$cls = '';
+	if ( isset( $settings['media_buttons'] ) && false === $settings['media_buttons'] ) {
+		$cls = ' no-media-button';
+	}
+	?>
+	<tr class="form-field wpinc-meta-field-rich-editor-tr<?php echo esc_attr( $cls ); ?>">
+		<th scope="row"><label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label></th>
+		<td><?php wp_editor( $val, $key, $settings ); ?></td>
+	</tr>
+	<?php
+}
+
+/**
+ * Outputs a checkbox row to term.
+ *
+ * @param string $label   Label.
+ * @param string $key     Meta key.
+ * @param bool   $checked Current value. Default false.
+ * @param string $title   Title of the checkbox.
+ */
+function output_term_checkbox_row( string $label, string $key, bool $checked = false, string $title = '' ): void {
+	wp_enqueue_style( 'wpinc-meta-field' );
+	?>
+	<tr class="form-field wpinc-meta-field-tr checkbox">
+		<th scope="row"><?php echo esc_html( $label ); ?></th>
+		<td><label>
+			<input type="checkbox" <?php name_id( $key ); ?> <?php echo esc_attr( $checked ? 'checked' : '' ); ?>>
+	<?php if ( ! empty( $title ) ) : ?>
+		<?php echo esc_html( $title ); ?>
+	<?php endif; ?>
+		</label></td>
+	</tr>
 	<?php
 }

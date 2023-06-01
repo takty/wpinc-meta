@@ -1,12 +1,9 @@
 /**
- *
  * Media Picker (JS)
  *
  * @author Takuto Yanagida
- * @version 2022-01-17
- *
+ * @version 2023-06-01
  */
-
 
 document.addEventListener('DOMContentLoaded', function () {
 	const elms = document.querySelectorAll('*[data-picker="media"]');
@@ -19,7 +16,7 @@ function setMediaPicker(elm, cls = null, fn = null, opts = {}) {
 	if (cls === null) cls = 'media';
 	opts = Object.assign({ multiple: false, type: '', parentGen: 1, title: null }, opts);
 
-	const postId = document.getElementById('post_ID').value;
+	const postId = document.getElementById('post_ID')?.value ?? null;
 	let cm = null;
 	elm.addEventListener('click', function (e) {
 		e.preventDefault();

@@ -4,10 +4,26 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2022-10-05
+ * @version 2023-05-31
  */
 
 namespace wpinc\meta;
+
+/**
+ * Retrieve post meta values of keys with postfixes.
+ *
+ * @param int    $post_id   Post ID.
+ * @param string $key       Meta key base.
+ * @param array  $postfixes Meta key postfixes.
+ * @return array Values.
+ */
+function get_post_meta_postfix( int $post_id, string $key, array $postfixes ): array {
+	$vals = array();
+	foreach ( $postfixes as $pf ) {
+		$vals[ $pf ] = get_post_meta( $post_id, "{$key}_$pf", true );
+	}
+	return $vals;
+}
 
 /**
  * Retrieves a post meta field as date.
@@ -17,13 +33,11 @@ namespace wpinc\meta;
  * @param string|null $format  Date format.
  * @return string Date string.
  */
-function get_post_meta_date( int $post_id, string $key, string $format = null ) {
-	if ( null === $format ) {
-		$format = get_option( 'date_format' );
-	}
+function get_post_meta_date( int $post_id, string $key, ?string $format = null ) {
+	$format ??= get_option( 'date_format' );
+
 	$val = mb_trim( get_post_meta( $post_id, $key, true ) );
-	$val = mysql2date( $format, $val );
-	return $val;
+	return mysql2date( $format, $val );
 }
 
 /**
@@ -37,14 +51,54 @@ function get_post_meta_lines( int $post_id, string $key ): array {
 	$val  = mb_trim( get_post_meta( $post_id, $key, true ) );
 	$vals = explode( "\n", $val );
 	$vals = array_map( '\wpinc\meta\mb_trim', $vals );
-	$vals = array_filter(
-		$vals,
-		function ( $e ) {
-			return ! empty( $e );
-		}
-	);
-	$vals = array_values( $vals );
+	$vals = array_filter( $vals );
+	return array_values( $vals );
+}
+
+/**
+ * Retrieve term meta values of keys with postfixes.
+ *
+ * @param int    $term_id   Term ID.
+ * @param string $key       Meta key base.
+ * @param array  $postfixes Meta key postfixes.
+ * @return array Values.
+ */
+function get_term_meta_postfix( int $term_id, string $key, array $postfixes ): array {
+	$vals = array();
+	foreach ( $postfixes as $pf ) {
+		$vals[ $pf ] = get_term_meta( $term_id, "{$key}_$pf", true );
+	}
 	return $vals;
+}
+
+/**
+ * Retrieves a term meta field as date.
+ *
+ * @param int         $term_id Term ID.
+ * @param string      $key     The meta key to retrieve.
+ * @param string|null $format  Date format.
+ * @return string Date string.
+ */
+function get_term_meta_date( int $term_id, string $key, ?string $format = null ) {
+	$format ??= get_option( 'date_format' );
+
+	$val = mb_trim( get_term_meta( $term_id, $key, true ) );
+	return mysql2date( $format, $val );
+}
+
+/**
+ * Retrieves a term meta field as multiple lines.
+ *
+ * @param int    $term_id Term ID.
+ * @param string $key     The meta key to retrieve.
+ * @return string[] Lines.
+ */
+function get_term_meta_lines( int $term_id, string $key ): array {
+	$val  = mb_trim( get_term_meta( $term_id, $key, true ) );
+	$vals = explode( "\n", $val );
+	$vals = array_map( '\wpinc\meta\mb_trim', $vals );
+	$vals = array_filter( $vals );
+	return array_values( $vals );
 }
 
 
@@ -95,6 +149,80 @@ function set_post_meta_with_wp_filter( int $post_id, string $key, ?string $filte
 		$val = $default;
 	}
 	update_post_meta( $post_id, $key, $val );
+}
+
+/**
+ * Stores post meta values of keys with postfixes.
+ *
+ * @param int           $post_id   Post ID.
+ * @param string        $key       Meta key base.
+ * @param array         $postfixes Meta key postfixes.
+ * @param callable|null $filter    Filter function.
+ */
+function set_post_meta_postfix( int $post_id, string $key, array $postfixes, ?callable $filter = null ): void {
+	foreach ( $postfixes as $pf ) {
+		\wpinc\meta\set_post_meta( $post_id, "{$key}_$pf", $filter );
+	}
+}
+
+/**
+ * Stores a term meta field.
+ *
+ * @param int           $term_id Term ID.
+ * @param string        $key     Metadata key.
+ * @param callable|null $filter  Filter.
+ * @param mixed|null    $default Default value.
+ */
+function set_term_meta( int $term_id, string $key, ?callable $filter = null, $default = null ): void {
+	$val = $_POST[ $key ] ?? null;  // phpcs:ignore
+	if ( null !== $filter && null !== $val ) {
+		$val = $filter( $val );
+	}
+	if ( empty( $val ) ) {
+		if ( null === $default ) {
+			delete_term_meta( $term_id, $key );
+			return;
+		}
+		$val = $default;
+	}
+	update_term_meta( $term_id, $key, $val );
+}
+
+/**
+ * Stores a term meta field after applying filters.
+ *
+ * @param int         $term_id     Term ID.
+ * @param string      $key         Metadata key.
+ * @param string|null $filter_name Filter name.
+ * @param mixed|null  $default     Default value.
+ */
+function set_term_meta_with_wp_filter( int $term_id, string $key, ?string $filter_name = null, $default = null ): void {
+	$val = $_POST[ $key ] ?? null;  // phpcs:ignore
+	if ( null !== $filter_name && null !== $val ) {
+		$val = apply_filters( $filter_name, $val );
+	}
+	if ( empty( $val ) ) {
+		if ( null === $default ) {
+			delete_term_meta( $term_id, $key );
+			return;
+		}
+		$val = $default;
+	}
+	update_term_meta( $term_id, $key, $val );
+}
+
+/**
+ * Stores term meta values of keys with postfixes.
+ *
+ * @param int           $term_id   Term ID.
+ * @param string        $key       Meta key base.
+ * @param array         $postfixes Meta key postfixes.
+ * @param callable|null $filter    Filter function.
+ */
+function set_term_meta_postfix( int $term_id, string $key, array $postfixes, ?callable $filter = null ): void {
+	foreach ( $postfixes as $pf ) {
+		\wpinc\meta\set_term_meta( $term_id, "{$key}_$pf", $filter );
+	}
 }
 
 
