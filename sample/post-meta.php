@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-06-01
+ * @version 2023-06-02
  */
 
 namespace wpinc\meta\sample;
@@ -32,8 +32,8 @@ function add_post_meta_sample( string $pt, string $tax ): void {
 					\st\meta\add_term_select_to_post( $post_id, '_meta_term_select', 'Term Select', $tax );
 					\st\meta\add_related_term_select_to_post( $post_id, '_meta_related_term_select', 'Related Term Select', $tax );
 					\st\meta\add_separator_to_post();
-					\st\meta\add_input_postfix_to_post( $post_id, '_meta_input_postfix', array( 'ja', 'en' ), 'Input Postfix' );
-					\st\meta\add_textarea_postfix_to_post( $post_id, '_meta_textarea_postfix', array( 'ja', 'en' ), 'Input Postfix' );
+					\st\meta\add_input_suffix_to_post( $post_id, '_meta_input_suffix', array( 'ja', 'en' ), 'Input Suffix' );
+					\st\meta\add_textarea_suffix_to_post( $post_id, '_meta_textarea_suffix', array( 'ja', 'en' ), 'Input Suffix' );
 					\st\meta\add_separator_to_post();
 					\st\meta\add_media_picker_to_post( $post_id, '_meta_media_picker', 'Media Picker' );
 					\st\meta\add_date_picker_to_post( $post_id, '_meta_date_picker', 'Date Picker' );
@@ -51,8 +51,8 @@ function add_post_meta_sample( string $pt, string $tax ): void {
 			\st\meta\set_post_meta( $post_id, '_meta_checkbox' );
 			\st\meta\set_post_meta( $post_id, '_meta_term_select' );
 			\st\meta\set_post_meta( $post_id, '_meta_related_term_select' );
-			\st\meta\set_post_meta_postfix( $post_id, '_meta_input_postfix', array( 'ja', 'en' ) );
-			\st\meta\set_post_meta_postfix( $post_id, '_meta_textarea_postfix', array( 'ja', 'en' ) );
+			\st\meta\set_post_meta_suffix( $post_id, '_meta_input_suffix', array( 'ja', 'en' ) );
+			\st\meta\set_post_meta_suffix( $post_id, '_meta_textarea_suffix', array( 'ja', 'en' ) );
 			\st\meta\set_post_meta( $post_id, '_meta_media_picker' );
 			\st\meta\set_post_meta( $post_id, '_meta_date_picker' );
 		}

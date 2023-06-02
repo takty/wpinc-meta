@@ -4,23 +4,23 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-05-31
+ * @version 2023-06-02
  */
 
 namespace wpinc\meta;
 
 /**
- * Retrieve post meta values of keys with postfixes.
+ * Retrieve post meta values of keys with suffixes.
  *
  * @param int    $post_id   Post ID.
  * @param string $key       Meta key base.
- * @param array  $postfixes Meta key postfixes.
+ * @param array  $suffixes Meta key suffixes.
  * @return array Values.
  */
-function get_post_meta_postfix( int $post_id, string $key, array $postfixes ): array {
+function get_post_meta_suffix( int $post_id, string $key, array $suffixes ): array {
 	$vals = array();
-	foreach ( $postfixes as $pf ) {
-		$vals[ $pf ] = get_post_meta( $post_id, is_null( $pf ) ? $key : "{$key}_$pf", true );
+	foreach ( $suffixes as $sfx ) {
+		$vals[ $sfx ] = get_post_meta( $post_id, is_null( $sfx ) ? $key : "{$key}_$sfx", true );
 	}
 	return $vals;
 }
@@ -56,17 +56,17 @@ function get_post_meta_lines( int $post_id, string $key ): array {
 }
 
 /**
- * Retrieve term meta values of keys with postfixes.
+ * Retrieve term meta values of keys with suffixes.
  *
  * @param int    $term_id   Term ID.
  * @param string $key       Meta key base.
- * @param array  $postfixes Meta key postfixes.
+ * @param array  $suffixes Meta key suffixes.
  * @return array Values.
  */
-function get_term_meta_postfix( int $term_id, string $key, array $postfixes ): array {
+function get_term_meta_suffix( int $term_id, string $key, array $suffixes ): array {
 	$vals = array();
-	foreach ( $postfixes as $pf ) {
-		$vals[ $pf ] = get_term_meta( $term_id, is_null( $pf ) ? $key : "{$key}_$pf", true );
+	foreach ( $suffixes as $sfx ) {
+		$vals[ $sfx ] = get_term_meta( $term_id, is_null( $sfx ) ? $key : "{$key}_$sfx", true );
 	}
 	return $vals;
 }
@@ -152,16 +152,16 @@ function set_post_meta_with_wp_filter( int $post_id, string $key, ?string $filte
 }
 
 /**
- * Stores post meta values of keys with postfixes.
+ * Stores post meta values of keys with suffixes.
  *
  * @param int           $post_id   Post ID.
  * @param string        $key       Meta key base.
- * @param array         $postfixes Meta key postfixes.
+ * @param array         $suffixes Meta key suffixes.
  * @param callable|null $filter    Filter function.
  */
-function set_post_meta_postfix( int $post_id, string $key, array $postfixes, ?callable $filter = null ): void {
-	foreach ( $postfixes as $pf ) {
-		\wpinc\meta\set_post_meta( $post_id, is_null( $pf ) ? $key : "{$key}_$pf", $filter );
+function set_post_meta_suffix( int $post_id, string $key, array $suffixes, ?callable $filter = null ): void {
+	foreach ( $suffixes as $sfx ) {
+		\wpinc\meta\set_post_meta( $post_id, is_null( $sfx ) ? $key : "{$key}_$sfx", $filter );
 	}
 }
 
@@ -212,16 +212,16 @@ function set_term_meta_with_wp_filter( int $term_id, string $key, ?string $filte
 }
 
 /**
- * Stores term meta values of keys with postfixes.
+ * Stores term meta values of keys with suffixes.
  *
  * @param int           $term_id   Term ID.
  * @param string        $key       Meta key base.
- * @param array         $postfixes Meta key postfixes.
+ * @param array         $suffixes Meta key suffixes.
  * @param callable|null $filter    Filter function.
  */
-function set_term_meta_postfix( int $term_id, string $key, array $postfixes, ?callable $filter = null ): void {
-	foreach ( $postfixes as $pf ) {
-		\wpinc\meta\set_term_meta( $term_id, is_null( $pf ) ? $key : "{$key}_$pf", $filter );
+function set_term_meta_suffix( int $term_id, string $key, array $suffixes, ?callable $filter = null ): void {
+	foreach ( $suffixes as $sfx ) {
+		\wpinc\meta\set_term_meta( $term_id, is_null( $sfx ) ? $key : "{$key}_$sfx", $filter );
 	}
 }
 
