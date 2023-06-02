@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-05-31
+ * @version 2023-06-02
  */
 
 namespace wpinc\meta;
@@ -55,7 +55,7 @@ function output_post_input_row_postfix( string $label, string $key, array $postf
 	<?php
 	foreach ( $postfixes as $pf ) {
 		$val = $vals[ $pf ] ?? '';
-		$ni  = "{$key}_$pf";
+		$ni  = is_null( $pf ) ? $key : "{$key}_$pf";
 		?>
 		<div class="wpinc-meta-field-row">
 			<label for="<?php echo esc_attr( $ni ); ?>"><?php echo esc_html( "$label [$pf]" ); ?></label>
@@ -83,7 +83,7 @@ function output_term_input_row_postfix( string $label, string $key, array $postf
 	wp_enqueue_style( 'wpinc-meta-field' );
 	foreach ( $postfixes as $idx => $pf ) {
 		$val = $vals[ $pf ] ?? '';
-		$ni  = "{$key}_$pf";
+		$ni  = is_null( $pf ) ? $key : "{$key}_$pf";
 		$cls = ( 0 === $idx ) ? ' wpinc-meta-field-tr-first' : ( ( count( $postfixes ) - 1 === $idx ) ? ' wpinc-meta-field-tr-last' : '' );
 		?>
 		<tr class="form-field wpinc-meta-field-tr-multiple<?php echo esc_attr( $cls ); ?>">
@@ -142,7 +142,7 @@ function output_post_textarea_row_postfix( string $label, string $key, array $po
 	<?php
 	foreach ( $postfixes as $pf ) {
 		$val = $vals[ $pf ] ?? '';
-		$ni  = "{$key}_$pf";
+		$ni  = is_null( $pf ) ? $key : "{$key}_$pf";
 		?>
 		<div class="wpinc-meta-field-row textarea">
 			<label for="<?php echo esc_attr( $ni ); ?>"><?php echo esc_html( "$label [$pf]" ); ?></label>
@@ -170,7 +170,7 @@ function output_term_textarea_row_postfix( string $label, string $key, array $po
 	wp_enqueue_style( 'wpinc-meta-field' );
 	foreach ( $postfixes as $idx => $pf ) {
 		$val = $vals[ $pf ] ?? '';
-		$ni  = "{$key}_$pf";
+		$ni  = is_null( $pf ) ? $key : "{$key}_$pf";
 		$cls = ( 0 === $idx ) ? ' wpinc-meta-field-tr-first' : ( ( count( $postfixes ) - 1 === $idx ) ? ' wpinc-meta-field-tr-last' : '' );
 		?>
 		<tr class="form-field wpinc-meta-field-tr-multiple<?php echo esc_attr( $cls ); ?>">

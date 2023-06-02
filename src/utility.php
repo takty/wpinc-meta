@@ -20,7 +20,7 @@ namespace wpinc\meta;
 function get_post_meta_postfix( int $post_id, string $key, array $postfixes ): array {
 	$vals = array();
 	foreach ( $postfixes as $pf ) {
-		$vals[ $pf ] = get_post_meta( $post_id, "{$key}_$pf", true );
+		$vals[ $pf ] = get_post_meta( $post_id, is_null( $pf ) ? $key : "{$key}_$pf", true );
 	}
 	return $vals;
 }
@@ -66,7 +66,7 @@ function get_post_meta_lines( int $post_id, string $key ): array {
 function get_term_meta_postfix( int $term_id, string $key, array $postfixes ): array {
 	$vals = array();
 	foreach ( $postfixes as $pf ) {
-		$vals[ $pf ] = get_term_meta( $term_id, "{$key}_$pf", true );
+		$vals[ $pf ] = get_term_meta( $term_id, is_null( $pf ) ? $key : "{$key}_$pf", true );
 	}
 	return $vals;
 }
@@ -161,7 +161,7 @@ function set_post_meta_with_wp_filter( int $post_id, string $key, ?string $filte
  */
 function set_post_meta_postfix( int $post_id, string $key, array $postfixes, ?callable $filter = null ): void {
 	foreach ( $postfixes as $pf ) {
-		\wpinc\meta\set_post_meta( $post_id, "{$key}_$pf", $filter );
+		\wpinc\meta\set_post_meta( $post_id, is_null( $pf ) ? $key : "{$key}_$pf", $filter );
 	}
 }
 
@@ -221,7 +221,7 @@ function set_term_meta_with_wp_filter( int $term_id, string $key, ?string $filte
  */
 function set_term_meta_postfix( int $term_id, string $key, array $postfixes, ?callable $filter = null ): void {
 	foreach ( $postfixes as $pf ) {
-		\wpinc\meta\set_term_meta( $term_id, "{$key}_$pf", $filter );
+		\wpinc\meta\set_term_meta( $term_id, is_null( $pf ) ? $key : "{$key}_$pf", $filter );
 	}
 }
 
