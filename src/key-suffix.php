@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-06-02
+ * @version 2023-06-05
  */
 
 namespace wpinc\meta;
@@ -56,9 +56,10 @@ function output_post_input_row_suffix( string $label, string $key, array $suffix
 	foreach ( $suffixes as $sfx ) {
 		$val = $vals[ $sfx ] ?? '';
 		$ni  = is_null( $sfx ) ? $key : "{$key}_$sfx";
+		$lab = is_null( $sfx ) ? $label : "$label [$sfx]";
 		?>
 		<div class="wpinc-meta-field-row">
-			<label for="<?php echo esc_attr( $ni ); ?>"><?php echo esc_html( "$label [$sfx]" ); ?></label>
+			<label for="<?php echo esc_attr( $ni ); ?>"><?php echo esc_html( $lab ); ?></label>
 			<div>
 				<input <?php name_id( $ni ); ?> type="<?php echo esc_attr( $type ); ?>" value="<?php echo esc_attr( $val ); ?>" size="64">
 			</div>
@@ -84,10 +85,11 @@ function output_term_input_row_suffix( string $label, string $key, array $suffix
 	foreach ( $suffixes as $idx => $sfx ) {
 		$val = $vals[ $sfx ] ?? '';
 		$ni  = is_null( $sfx ) ? $key : "{$key}_$sfx";
+		$lab = is_null( $sfx ) ? $label : "$label [$sfx]";
 		$cls = ( 0 === $idx ) ? ' wpinc-meta-field-tr-first' : ( ( count( $suffixes ) - 1 === $idx ) ? ' wpinc-meta-field-tr-last' : '' );
 		?>
 		<tr class="form-field wpinc-meta-field-tr-multiple<?php echo esc_attr( $cls ); ?>">
-			<th scope="row"><label for="<?php echo esc_attr( $ni ); ?>"><?php echo esc_html( "$label [$sfx]" ); ?></label></th>
+			<th scope="row"><label for="<?php echo esc_attr( $ni ); ?>"><?php echo esc_html( $lab ); ?></label></th>
 			<td><input type="<?php echo esc_attr( $type ); ?>" <?php name_id( $ni ); ?> size="40" value="<?php echo esc_attr( $val ); ?>"></td>
 		</tr>
 		<?php
@@ -143,9 +145,10 @@ function output_post_textarea_row_suffix( string $label, string $key, array $suf
 	foreach ( $suffixes as $sfx ) {
 		$val = $vals[ $sfx ] ?? '';
 		$ni  = is_null( $sfx ) ? $key : "{$key}_$sfx";
+		$lab = is_null( $sfx ) ? $label : "$label [$sfx]";
 		?>
 		<div class="wpinc-meta-field-row textarea">
-			<label for="<?php echo esc_attr( $ni ); ?>"><?php echo esc_html( "$label [$sfx]" ); ?></label>
+			<label for="<?php echo esc_attr( $ni ); ?>"><?php echo esc_html( $lab ); ?></label>
 			<div>
 				<textarea <?php name_id( $ni ); ?> cols="64" rows="<?php echo esc_attr( $rows ); ?>"><?php echo esc_textarea( $val ); ?></textarea>
 			</div>
@@ -171,10 +174,11 @@ function output_term_textarea_row_suffix( string $label, string $key, array $suf
 	foreach ( $suffixes as $idx => $sfx ) {
 		$val = $vals[ $sfx ] ?? '';
 		$ni  = is_null( $sfx ) ? $key : "{$key}_$sfx";
+		$lab = is_null( $sfx ) ? $label : "$label [$sfx]";
 		$cls = ( 0 === $idx ) ? ' wpinc-meta-field-tr-first' : ( ( count( $suffixes ) - 1 === $idx ) ? ' wpinc-meta-field-tr-last' : '' );
 		?>
 		<tr class="form-field wpinc-meta-field-tr-multiple<?php echo esc_attr( $cls ); ?>">
-			<th scope="row"><label for="<?php echo esc_attr( $ni ); ?>"><?php echo esc_html( "$label [$sfx]" ); ?></label></th>
+			<th scope="row"><label for="<?php echo esc_attr( $ni ); ?>"><?php echo esc_html( $lab ); ?></label></th>
 			<td><textarea <?php name_id( $ni ); ?> rows="<?php echo esc_attr( $rows ); ?>" cols="50" class="large-text"><?php echo esc_textarea( $val ); ?></textarea></td>
 		</tr>
 		<?php
