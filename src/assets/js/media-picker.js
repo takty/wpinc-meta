@@ -1,5 +1,5 @@
 /**
- * Media Picker (JS)
+ * Media Picker
  *
  * @author Takuto Yanagida
  * @version 2023-06-06
@@ -17,7 +17,14 @@ function wpinc_meta_media_picker_initialize(key) {
 
 	function init(body) {
 		const sel = body.getElementsByClassName(CLS_SEL)[0];
-		setMediaPicker(sel, false, set_item, { multiple: false, title: sel.innerText, media_id_input: key });
+		window.wpinc.meta.setMediaPicker(sel, null, set_item, {
+			multiple      : false,
+			type          : '',
+			parentGen     : -1,
+			title         : sel.innerText,
+			media_id_input: key
+		});
+
 		const del = body.getElementsByClassName(CLS_DEL)[0];
 		del.addEventListener('click', () => {
 			set_item(null, { id: '', url: '', title: '' });
