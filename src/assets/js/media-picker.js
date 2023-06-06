@@ -1,12 +1,9 @@
 /**
- *
- * Field (JS)
+ * Media Picker (JS)
  *
  * @author Takuto Yanagida
- * @version 2022-01-17
- *
+ * @version 2023-06-06
  */
-
 
 function wpinc_meta_media_picker_initialize(key) {
 	const NS        = 'wpinc-meta-media-picker';
@@ -29,7 +26,7 @@ function wpinc_meta_media_picker_initialize(key) {
 
 	function set_item(dummy, f) {
 		document.getElementById(key).value = f.id;
-		document.getElementById(IDN_SRC).style.backgroundImage = f.url ? ('url("' + f.url + '")') : '';
+		document.getElementById(IDN_SRC).style.backgroundImage = f.url ? (`url("${f.url}")`) : '';
 		document.getElementById(IDM_TITLE).value = f.title;
 	}
 }

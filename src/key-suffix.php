@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-06-05
+ * @version 2023-06-06
  */
 
 namespace wpinc\meta;
@@ -49,7 +49,7 @@ function add_input_suffix_to_term( int $term_id, string $key, array $suffixes, s
  * @param string $type     Input type. Default 'text'.
  */
 function output_post_input_row_suffix( string $label, string $key, array $suffixes, array $vals, string $type = 'text' ): void {
-	wp_enqueue_style( 'wpinc-meta-field' );
+	wp_enqueue_style( 'wpinc-meta' );
 	?>
 	<div class="wpinc-meta-field-group">
 	<?php
@@ -81,7 +81,8 @@ function output_post_input_row_suffix( string $label, string $key, array $suffix
  * @param string $type     Input type. Default 'text'.
  */
 function output_term_input_row_suffix( string $label, string $key, array $suffixes, array $vals, string $type = 'text' ): void {
-	wp_enqueue_style( 'wpinc-meta-field' );
+	wp_enqueue_style( 'wpinc-meta' );
+
 	foreach ( $suffixes as $idx => $sfx ) {
 		$val = $vals[ $sfx ] ?? '';
 		$ni  = is_null( $sfx ) ? $key : "{$key}_$sfx";
@@ -138,7 +139,7 @@ function add_textarea_suffix_to_term( int $term_id, string $key, array $suffixes
  * @param int    $rows     Rows attribute. Default 2.
  */
 function output_post_textarea_row_suffix( string $label, string $key, array $suffixes, array $vals, int $rows = 2 ): void {
-	wp_enqueue_style( 'wpinc-meta-field' );
+	wp_enqueue_style( 'wpinc-meta' );
 	?>
 	<div class="wpinc-meta-field-group">
 	<?php
@@ -170,7 +171,8 @@ function output_post_textarea_row_suffix( string $label, string $key, array $suf
  * @param int    $rows     Rows attribute. Default 2.
  */
 function output_term_textarea_row_suffix( string $label, string $key, array $suffixes, array $vals, int $rows = 5 ): void {
-	wp_enqueue_style( 'wpinc-meta-field' );
+	wp_enqueue_style( 'wpinc-meta' );
+
 	foreach ( $suffixes as $idx => $sfx ) {
 		$val = $vals[ $sfx ] ?? '';
 		$ni  = is_null( $sfx ) ? $key : "{$key}_$sfx";

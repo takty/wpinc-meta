@@ -1,10 +1,10 @@
 <?php
 /**
- * Picker
+ * Pickers
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-05-31
+ * @version 2023-06-06
  */
 
 namespace wpinc\meta;
@@ -46,8 +46,8 @@ function add_media_picker_to_term( int $term_id, string $key, string $label ): v
  */
 function output_post_media_picker_row( string $label, string $key, int $media_id = 0 ): void {
 	wp_enqueue_script( 'picker-media' );
-	wp_enqueue_script( 'wpinc-meta-field' );
-	wp_enqueue_style( 'wpinc-meta-field' );
+	wp_enqueue_script( 'wpinc-meta-media-picker' );
+	wp_enqueue_style( 'wpinc-meta' );
 
 	$src   = '';
 	$title = '';
@@ -86,8 +86,8 @@ function output_post_media_picker_row( string $label, string $key, int $media_id
  */
 function output_term_media_picker_row( string $label, string $key, int $media_id = 0 ): void {
 	wp_enqueue_script( 'picker-media' );
-	wp_enqueue_script( 'wpinc-meta-field' );
-	wp_enqueue_style( 'wpinc-meta-field' );
+	wp_enqueue_script( 'wpinc-meta-media-picker' );
+	wp_enqueue_style( 'wpinc-meta' );
 
 	$src   = '';
 	$title = '';
@@ -157,7 +157,7 @@ function output_post_date_picker_row( string $label, string $key, $val ): void {
 	wp_enqueue_script( 'flatpickr' );
 	wp_enqueue_script( 'flatpickr.l10n.ja' );
 	wp_enqueue_style( 'flatpickr' );
-	wp_enqueue_style( 'wpinc-meta-field' );
+	wp_enqueue_style( 'wpinc-meta' );
 
 	$val = $val ?? '';
 	$loc = strtolower( str_replace( '_', '-', get_user_locale() ) );
@@ -184,7 +184,7 @@ function output_term_date_picker_row( string $label, string $key, $val ): void {
 	wp_enqueue_script( 'flatpickr' );
 	wp_enqueue_script( 'flatpickr.l10n.ja' );
 	wp_enqueue_style( 'flatpickr' );
-	wp_enqueue_style( 'wpinc-meta-field' );
+	wp_enqueue_style( 'wpinc-meta' );
 
 	$val = $val ?? '';
 	$loc = strtolower( str_replace( '_', '-', get_user_locale() ) );

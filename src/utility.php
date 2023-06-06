@@ -10,7 +10,7 @@
 namespace wpinc\meta;
 
 /**
- * Retrieve post meta values of keys with suffixes.
+ * Retrieves post meta values of keys with suffixes.
  *
  * @param int    $post_id   Post ID.
  * @param string $key       Meta key base.
@@ -56,7 +56,7 @@ function get_post_meta_lines( int $post_id, string $key ): array {
 }
 
 /**
- * Retrieve term meta values of keys with suffixes.
+ * Retrieves term meta values of keys with suffixes.
  *
  * @param int    $term_id   Term ID.
  * @param string $key       Meta key base.
