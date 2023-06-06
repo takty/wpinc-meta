@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-05-31
+ * @version 2023-06-06
  */
 
 namespace wpinc\meta;
@@ -26,14 +26,17 @@ function initialize( array $args = array() ): void {
 	add_action(
 		'admin_enqueue_scripts',
 		function () use ( $url_to ) {
-			wp_register_script( 'picker-link', \wpinc\abs_url( $url_to, './assets/lib/picker-link.min.js' ), array(), 1.0, false );
-			wp_register_script( 'picker-media', \wpinc\abs_url( $url_to, './assets/lib/picker-media.min.js' ), array(), 1.0, false );
-			wp_register_script( 'flatpickr', \wpinc\abs_url( $url_to, './assets/lib/flatpickr.min.js' ), array(), 1.0, false );
-			wp_register_script( 'flatpickr.l10n.ja', \wpinc\abs_url( $url_to, './assets/lib/flatpickr.l10n.ja.min.js' ), array(), 1.0, false );
+			// Styles for various fields and pickers.
+			wp_register_style( 'wpinc-meta', \wpinc\abs_url( $url_to, './assets/css/style.min.css' ), array(), 1.0 );
+
+			// For functions 'output_post_date_picker_row' and 'output_term_date_picker_row'.
+			wp_register_script( 'flatpickr', \wpinc\abs_url( $url_to, './assets/lib/flatpickr.min.js' ), array(), 1.0, true );
+			wp_register_script( 'flatpickr.l10n.ja', \wpinc\abs_url( $url_to, './assets/lib/flatpickr.l10n.ja.min.js' ), array(), 1.0, true );
 			wp_register_style( 'flatpickr', \wpinc\abs_url( $url_to, './assets/lib/flatpickr.min.css' ), array(), 1.0 );
 
-			wp_register_script( 'wpinc-meta-field', \wpinc\abs_url( $url_to, './assets/js/field.min.js' ), array( 'picker-media' ), 1.0, false );
-			wp_register_style( 'wpinc-meta-field', \wpinc\abs_url( $url_to, './assets/css/field.min.css' ), array(), 1.0 );
+			// For functions 'output_post_media_picker_row' and 'output_term_media_picker_row'.
+			wp_register_script( 'picker-media', \wpinc\abs_url( $url_to, './assets/lib/picker-media.min.js' ), array( 'media-view' ), 1.0, true );
+			wp_register_script( 'wpinc-meta-media-picker', \wpinc\abs_url( $url_to, './assets/js/media-picker.min.js' ), array(), 1.0, true );
 		}
 	);
 }
@@ -201,7 +204,7 @@ function add_checkbox_to_term( int $term_id, string $key, string $label, string 
  * Outputs a separator to post.
  */
 function output_post_separator(): void {
-	wp_enqueue_style( 'wpinc-meta-field' );
+	wp_enqueue_style( 'wpinc-meta' );
 	?>
 	<hr class="wpinc-meta-field-separator">
 	<?php
@@ -216,7 +219,7 @@ function output_post_separator(): void {
  * @param string $type  Input type. Default 'text'.
  */
 function output_post_input_row( string $label, string $key, $val, string $type = 'text' ): void {
-	wp_enqueue_style( 'wpinc-meta-field' );
+	wp_enqueue_style( 'wpinc-meta' );
 	$val = $val ?? '';
 	?>
 	<div class="wpinc-meta-field-row <?php echo esc_attr( $type ); ?>">
@@ -237,7 +240,7 @@ function output_post_input_row( string $label, string $key, $val, string $type =
  * @param int    $rows  Rows attribute. Default 2.
  */
 function output_post_textarea_row( string $label, string $key, $val, int $rows = 2 ): void {
-	wp_enqueue_style( 'wpinc-meta-field' );
+	wp_enqueue_style( 'wpinc-meta' );
 	$val = $val ?? '';
 	?>
 	<div class="wpinc-meta-field-row textarea">
@@ -258,7 +261,7 @@ function output_post_textarea_row( string $label, string $key, $val, int $rows =
  * @param array  $settings Settings for wp_editor.
  */
 function output_post_rich_editor_row( string $label, string $key, $val, array $settings = array() ): void {
-	wp_enqueue_style( 'wpinc-meta-field' );
+	wp_enqueue_style( 'wpinc-meta' );
 	$cls = '';
 	if ( isset( $settings['media_buttons'] ) && false === $settings['media_buttons'] ) {
 		$cls = ' no-media-button';
@@ -280,7 +283,7 @@ function output_post_rich_editor_row( string $label, string $key, $val, array $s
  * @param string $title   Title of the checkbox.
  */
 function output_post_checkbox_row( string $label, string $key, bool $checked = false, string $title = '' ): void {
-	wp_enqueue_style( 'wpinc-meta-field' );
+	wp_enqueue_style( 'wpinc-meta' );
 	?>
 	<div class="wpinc-meta-field-row checkbox">
 		<span class="label" for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></span>
@@ -304,7 +307,7 @@ function output_post_checkbox_row( string $label, string $key, bool $checked = f
  * @param string            $field             Term field.
  */
 function output_post_term_select_row( string $label, string $key, $taxonomy_or_terms, $val, string $field = 'slug' ): void {
-	wp_enqueue_style( 'wpinc-meta-field' );
+	wp_enqueue_style( 'wpinc-meta' );
 	$terms = is_array( $taxonomy_or_terms ) ? $taxonomy_or_terms : get_terms( $taxonomy_or_terms );
 	if ( ! is_array( $terms ) ) {
 		$terms = array();
@@ -335,7 +338,7 @@ function output_post_term_select_row( string $label, string $key, $taxonomy_or_t
  * Outputs a separator to term.
  */
 function output_term_separator(): void {
-	wp_enqueue_style( 'wpinc-meta-field' );
+	wp_enqueue_style( 'wpinc-meta' );
 	?>
 	<tr class="form-field wpinc-meta-field-separator-tr">
 		<th></th><td></td>
@@ -352,7 +355,7 @@ function output_term_separator(): void {
  * @param string $type  Input type. Default 'text'.
  */
 function output_term_input_row( string $label, string $key, $val, string $type = 'text' ): void {
-	wp_enqueue_style( 'wpinc-meta-field' );
+	wp_enqueue_style( 'wpinc-meta' );
 	$val = $val ?? '';
 	?>
 	<tr class="form-field wpinc-meta-field-tr <?php echo esc_attr( $type ); ?>">
@@ -371,7 +374,7 @@ function output_term_input_row( string $label, string $key, $val, string $type =
  * @param int    $rows  Rows attribute. Default 2.
  */
 function output_term_textarea_row( string $label, string $key, $val, int $rows = 2 ): void {
-	wp_enqueue_style( 'wpinc-meta-field' );
+	wp_enqueue_style( 'wpinc-meta' );
 	$val = $val ?? '';
 	?>
 	<tr class="form-field wpinc-meta-field-tr textarea">
@@ -390,7 +393,7 @@ function output_term_textarea_row( string $label, string $key, $val, int $rows =
  * @param array  $settings Settings for wp_editor.
  */
 function output_term_rich_editor_row( string $label, string $key, $val, array $settings = array() ): void {
-	wp_enqueue_style( 'wpinc-meta-field' );
+	wp_enqueue_style( 'wpinc-meta' );
 	$cls = '';
 	if ( isset( $settings['media_buttons'] ) && false === $settings['media_buttons'] ) {
 		$cls = ' no-media-button';
@@ -412,7 +415,7 @@ function output_term_rich_editor_row( string $label, string $key, $val, array $s
  * @param string $title   Title of the checkbox.
  */
 function output_term_checkbox_row( string $label, string $key, bool $checked = false, string $title = '' ): void {
-	wp_enqueue_style( 'wpinc-meta-field' );
+	wp_enqueue_style( 'wpinc-meta' );
 	?>
 	<tr class="form-field wpinc-meta-field-tr checkbox">
 		<th scope="row"><?php echo esc_html( $label ); ?></th>
