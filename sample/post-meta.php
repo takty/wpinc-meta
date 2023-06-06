@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-06-02
+ * @version 2023-06-06
  */
 
 namespace wpinc\meta\sample;
@@ -18,11 +18,11 @@ namespace wpinc\meta\sample;
 function add_post_meta_sample( string $pt, string $tax ): void {
 	add_action(
 		'admin_menu',
-		function () {
+		function () use ( $pt, $tax ) {
 			add_meta_box(
 				'mb_post_meta_sample',
 				'Post Meta Sample',
-				function ( \WP_Post $post ): void {
+				function ( \WP_Post $post ) use ( $tax ) : void {
 					$post_id = $post->ID;
 					\st\meta\add_input_to_post( $post_id, '_meta_input', 'Input' );
 					\st\meta\add_textarea_to_post( $post_id, '_meta_textarea', 'Textarea' );
