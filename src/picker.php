@@ -45,6 +45,7 @@ function add_media_picker_to_term( int $term_id, string $key, string $label ): v
  * @param int    $media_id Media ID.
  */
 function output_post_media_picker_row( string $label, string $key, int $media_id = 0 ): void {
+	wp_enqueue_media();
 	wp_enqueue_script( 'wpinc-meta-picker-media' );
 	wp_enqueue_script( 'wpinc-meta-media-picker' );
 	wp_enqueue_style( 'wpinc-meta' );
@@ -85,6 +86,7 @@ function output_post_media_picker_row( string $label, string $key, int $media_id
  * @param int    $media_id Media ID.
  */
 function output_term_media_picker_row( string $label, string $key, int $media_id = 0 ): void {
+	wp_enqueue_media();
 	wp_enqueue_script( 'wpinc-meta-picker-media' );
 	wp_enqueue_script( 'wpinc-meta-media-picker' );
 	wp_enqueue_style( 'wpinc-meta' );
