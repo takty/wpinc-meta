@@ -2,7 +2,7 @@
  * Media Picker
  *
  * @author Takuto Yanagida
- * @version 2023-06-06
+ * @version 2023-06-20
  */
 
 window.wpinc      = window.wpinc ?? {}
@@ -90,9 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 
 		function createMedia(postId, title, multiple, type) {
-			wp.media.model.settings.post.id = postId;
-			wp.media.view.settings.post.id  = postId;
-
+			if (postId !== null) {
+				wp.media.model.settings.post.id = postId;
+				wp.media.view.settings.post.id  = postId;
+			}
 			const media = wp.media({
 				title   : title,
 				library : { type },
@@ -100,7 +101,9 @@ document.addEventListener('DOMContentLoaded', () => {
 				multiple: multiple,
 			});
 			// For attaching uploaded file to post
-			media.uploader.options.uploader.params.post_id = postId;
+			if (postId !== null) {
+				media.uploader.options.uploader.params.post_id = postId;
+			}
 			return media;
 		}
 
