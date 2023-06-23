@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2022-10-29
+ * @version 2023-06-23
  */
 
 namespace wpinc\meta;
@@ -18,7 +18,7 @@ namespace wpinc\meta;
  */
 function get_the_sub_title( string $meta_key, $post = 0 ): string {
 	if ( WP_DEBUG ) {
-		trigger_error( 'Function get_the_sub_title is deprecated!', E_USER_DEPRECATED );  // phpcs:ignore
+		trigger_error( 'Use function \'\\wpinc\\post\\get_the_title\' instead.', E_USER_DEPRECATED );  // phpcs:ignore
 	}
 	$post = get_post( $post );
 	if ( ! $post ) {
@@ -41,7 +41,7 @@ function get_the_sub_title( string $meta_key, $post = 0 ): string {
  */
 function the_sub_title( string $meta_key, string $before = '', string $after = '', $post = 0 ): void {
 	if ( WP_DEBUG ) {
-		trigger_error( 'Function the_sub_title is deprecated!', E_USER_DEPRECATED );  // phpcs:ignore
+		trigger_error( 'Use function \'\\wpinc\\post\\the_title\' instead.', E_USER_DEPRECATED );  // phpcs:ignore
 	}
 	$title = get_the_sub_title( $meta_key, $post );
 	if ( empty( $title ) ) {
@@ -64,7 +64,7 @@ function the_sub_title( string $meta_key, string $before = '', string $after = '
  */
 function get_the_sub_content( string $meta_key, $post = 0 ): string {
 	if ( WP_DEBUG ) {
-		trigger_error( 'Function get_the_sub_content is deprecated!', E_USER_DEPRECATED );  // phpcs:ignore
+		trigger_error( 'Use function \'\\wpinc\\post\\get_the_content\' instead.', E_USER_DEPRECATED );  // phpcs:ignore
 	}
 	$post = get_post( $post );
 	if ( ! $post ) {
@@ -83,14 +83,14 @@ function get_the_sub_content( string $meta_key, $post = 0 ): string {
  */
 function the_sub_content( string $meta_key, $post = 0 ): void {
 	if ( WP_DEBUG ) {
-		trigger_error( 'Function the_sub_content is deprecated!', E_USER_DEPRECATED );  // phpcs:ignore
+		trigger_error( 'Use function \'\\wpinc\\post\\the_content\' instead.', E_USER_DEPRECATED );  // phpcs:ignore
 	}
 	$content = get_the_sub_content( $meta_key, $post );
 	if ( empty( $content ) ) {
 		return;
 	}
 	$content = filter_content( $content );
-	echo $title;  // phpcs:ignore
+	echo $content;  // phpcs:ignore
 }
 
 /**
@@ -101,7 +101,7 @@ function the_sub_content( string $meta_key, $post = 0 ): void {
  */
 function filter_content( string $str ): string {
 	if ( WP_DEBUG ) {
-		trigger_error( 'Function filter_content is deprecated!', E_USER_DEPRECATED );  // phpcs:ignore
+		trigger_error( 'Use function \'\\wpinc\\post\\process_content\' instead.', E_USER_DEPRECATED );  // phpcs:ignore
 	}
 	$str = apply_filters( 'the_content', $str );  // Shortcodes are expanded here.
 	$str = str_replace( ']]>', ']]&gt;', $str );
