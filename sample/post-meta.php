@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-06-06
+ * @version 2023-06-28
  */
 
 namespace wpinc\meta\sample;
@@ -37,6 +37,11 @@ function add_post_meta_sample( string $pt, string $tax ): void {
 					\st\meta\add_separator_to_post();
 					\st\meta\add_media_picker_to_post( $post_id, '_meta_media_picker', 'Media Picker' );
 					\st\meta\add_date_picker_to_post( $post_id, '_meta_date_picker', 'Date Picker' );
+					$cp_opts = array(
+						'placeholder' => '#123456',
+						'default'     => '#123456',
+					);
+					\st\meta\add_color_picker_to_post( $post_id, '_meta_color_picker', 'Color Picker', $cp_opts );
 				},
 				$pt
 			);
@@ -55,6 +60,7 @@ function add_post_meta_sample( string $pt, string $tax ): void {
 			\st\meta\set_post_meta_suffix( $post_id, '_meta_textarea_suffix', array( 'ja', 'en' ) );
 			\st\meta\set_post_meta( $post_id, '_meta_media_picker' );
 			\st\meta\set_post_meta( $post_id, '_meta_date_picker' );
+			\st\meta\set_post_meta( $post_id, '_meta_color_picker' );
 		}
 	);
 }

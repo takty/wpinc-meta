@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-06-06
+ * @version 2023-06-28
  */
 
 namespace wpinc\meta;
@@ -198,6 +198,106 @@ function output_term_date_picker_row( string $label, string $key, $val ): void {
 			<a class="button" title="clear" data-clear>X</a>
 		</td>
 		<script>window.addEventListener('load', function () { flatpickr('#<?php echo esc_attr( $key ); ?>_row', { locale: '<?php echo esc_html( $loc ); ?>', wrap: true }); });</script>
+	</tr>
+	<?php
+}
+
+
+// -----------------------------------------------------------------------------
+
+
+/**
+ * Adds color picker for post meta.
+ *
+ * @param int    $post_id Post ID.
+ * @param string $key     Key.
+ * @param string $label   Label.
+ * @param array  $opts {
+ *     Options.
+ *
+ *     @type string 'placeholder' Placeholder of the input. Default ''.
+ *     @type string 'default'     Default color. Default ''.
+ * }
+ */
+function add_color_picker_to_post( int $post_id, string $key, string $label, array $opts ): void {
+	$val = get_post_meta( $post_id, $key, true );
+	if ( empty( $val ) && ! empty( $opts['default'] ) ) {
+		$val = $opts['default'];
+	}
+	output_post_color_picker_row( $label, $key, $val, $opts );
+}
+
+/**
+ * Adds color picker for term meta.
+ *
+ * @param int    $term_id Term ID.
+ * @param string $key     Key.
+ * @param string $label   Label.
+ * @param array  $opts {
+ *     Options.
+ *
+ *     @type string 'placeholder' Placeholder of the input. Default ''.
+ *     @type string 'default'     Default color. Default ''.
+ * }
+ */
+function add_color_picker_to_term( int $term_id, string $key, string $label, array $opts ): void {
+	$val = get_term_meta( $term_id, $key, true );
+	if ( empty( $val ) && ! empty( $opts['default'] ) ) {
+		$val = $opts['default'];
+	}
+	output_term_color_picker_row( $label, $key, $val, $opts );
+}
+
+/**
+ * Outputs color picker row for post.
+ *
+ * @param string $label Label.
+ * @param string $key   Key.
+ * @param mixed  $val   Value.
+ * @param array  $opts  Options.
+ */
+function output_post_color_picker_row( string $label, string $key, $val, array $opts ): void {
+	wp_enqueue_script( 'wp-color-picker' );
+	wp_enqueue_style( 'wp-color-picker' );
+	wp_enqueue_style( 'wpinc-meta' );
+	wp_add_inline_script( 'wp-color-picker', 'jQuery(document).ready(function($){$(\'.wpinc-meta-color-picker input\').wpColorPicker();});' );
+
+	$val = $val ?? '';
+	$ph  = $opts['placeholder'] ?? '';
+	$def = $opts['default'] ?? '';
+	?>
+	<div class="wpinc-meta-color-picker">
+		<label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label>
+		<div>
+			<input type="text" <?php name_id( $key ); ?> value="<?php echo esc_attr( $val ); ?>" maxlength="7" placeholder="<?php echo esc_attr( $ph ); ?>" data-default-color="<?php echo esc_attr( $def ); ?>">
+		</div>
+	</div>
+	<?php
+}
+
+/**
+ * Outputs color picker row for term.
+ *
+ * @param string $label Label.
+ * @param string $key   Key.
+ * @param mixed  $val   Value.
+ * @param array  $opts  Options.
+ */
+function output_term_color_picker_row( string $label, string $key, $val, array $opts ): void {
+	wp_enqueue_script( 'wp-color-picker' );
+	wp_enqueue_style( 'wp-color-picker' );
+	wp_enqueue_style( 'wpinc-meta' );
+	wp_add_inline_script( 'wp-color-picker', 'jQuery(document).ready(function($){$(\'.wpinc-meta-color-picker-tr input\').wpColorPicker();});' );
+
+	$val = $val ?? '';
+	$ph  = $opts['placeholder'] ?? '';
+	$def = $opts['default'] ?? '';
+	?>
+	<tr class="form-field wpinc-meta-color-picker-tr">
+		<th scope="row"><label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label></th>
+		<td class="flatpickr input-group" id="<?php echo esc_attr( $key ); ?>_row">
+			<input type="text" <?php name_id( $key ); ?> value="<?php echo esc_attr( $val ); ?>" maxlength="7" placeholder="<?php echo esc_attr( $ph ); ?>" data-default-color="<?php echo esc_attr( $def ); ?>">
+		</td>
 	</tr>
 	<?php
 }

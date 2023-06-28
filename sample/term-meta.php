@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-06-02
+ * @version 2023-06-28
  */
 
 namespace wpinc\meta\sample;
@@ -30,6 +30,11 @@ function add_term_meta_sample( string $tax ) {
 			\wpinc\meta\add_separator_to_term();
 			\wpinc\meta\add_media_picker_to_term( $term_id, '_meta_media_picker', 'Media Picker' );
 			\wpinc\meta\add_date_picker_to_term( $term_id, '_meta_date_picker', 'Date Picker' );
+			$cp_opts = array(
+				'placeholder' => '#123456',
+				'default'     => '#123456',
+			);
+			\wpinc\meta\add_color_picker_to_term( $term_id, '_meta_color_picker', 'Color Picker', $cp_opts );
 		},
 		20
 	);
@@ -44,6 +49,7 @@ function add_term_meta_sample( string $tax ) {
 			\wpinc\meta\set_term_meta_suffix( $term_id, '_meta_textarea_suffix', array( 'ja', 'en' ) );
 			\wpinc\meta\set_term_meta( $term_id, '_meta_media_picker' );
 			\wpinc\meta\set_term_meta( $term_id, '_meta_date_picker' );
+			\wpinc\meta\set_term_meta( $term_id, '_meta_color_picker' );
 		}
 	);
 }

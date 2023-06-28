@@ -2,14 +2,15 @@
  * Fields and Pickers
  *
  * @author Takuto Yanagida
- * @version 2023-06-06
+ * @version 2023-06-28
  */
 
 $breakpoint-single-wrap: 45rem;
 
 .wpinc-meta-field-row,
 .wpinc-meta-media-picker,
-.wpinc-meta-date-picker {
+.wpinc-meta-date-picker,
+.wpinc-meta-color-picker {
 	&:not(:first-child) {
 		margin-block-start: 0.75rem;
 	}
