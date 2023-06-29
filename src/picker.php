@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-06-28
+ * @version 2023-06-29
  */
 
 namespace wpinc\meta;
@@ -219,7 +219,7 @@ function output_term_date_picker_row( string $label, string $key, $val ): void {
  *     @type string 'default'     Default color. Default ''.
  * }
  */
-function add_color_picker_to_post( int $post_id, string $key, string $label, array $opts ): void {
+function add_color_picker_to_post( int $post_id, string $key, string $label, array $opts = array() ): void {
 	$val = get_post_meta( $post_id, $key, true );
 	if ( empty( $val ) && ! empty( $opts['default'] ) ) {
 		$val = $opts['default'];
@@ -240,7 +240,7 @@ function add_color_picker_to_post( int $post_id, string $key, string $label, arr
  *     @type string 'default'     Default color. Default ''.
  * }
  */
-function add_color_picker_to_term( int $term_id, string $key, string $label, array $opts ): void {
+function add_color_picker_to_term( int $term_id, string $key, string $label, array $opts = array() ): void {
 	$val = get_term_meta( $term_id, $key, true );
 	if ( empty( $val ) && ! empty( $opts['default'] ) ) {
 		$val = $opts['default'];
@@ -256,7 +256,7 @@ function add_color_picker_to_term( int $term_id, string $key, string $label, arr
  * @param mixed  $val   Value.
  * @param array  $opts  Options.
  */
-function output_post_color_picker_row( string $label, string $key, $val, array $opts ): void {
+function output_post_color_picker_row( string $label, string $key, $val, array $opts = array() ): void {
 	wp_enqueue_script( 'wp-color-picker' );
 	wp_enqueue_style( 'wp-color-picker' );
 	wp_enqueue_style( 'wpinc-meta' );
@@ -283,7 +283,7 @@ function output_post_color_picker_row( string $label, string $key, $val, array $
  * @param mixed  $val   Value.
  * @param array  $opts  Options.
  */
-function output_term_color_picker_row( string $label, string $key, $val, array $opts ): void {
+function output_term_color_picker_row( string $label, string $key, $val, array $opts = array() ): void {
 	wp_enqueue_script( 'wp-color-picker' );
 	wp_enqueue_style( 'wp-color-picker' );
 	wp_enqueue_style( 'wpinc-meta' );
@@ -319,7 +319,7 @@ function output_term_color_picker_row( string $label, string $key, $val, array $
  *     @type string 'default'     Default hue. Default ''.
  * }
  */
-function add_color_hue_picker_to_post( int $post_id, string $key, string $label, array $opts ): void {
+function add_color_hue_picker_to_post( int $post_id, string $key, string $label, array $opts = array() ): void {
 	$val = get_post_meta( $post_id, $key, true );
 	if ( empty( $val ) && ! empty( $opts['default'] ) ) {
 		$val = $opts['default'];
@@ -340,7 +340,7 @@ function add_color_hue_picker_to_post( int $post_id, string $key, string $label,
  *     @type string 'default'     Default hue. Default ''.
  * }
  */
-function add_color_hue_picker_to_term( int $term_id, string $key, string $label, array $opts ): void {
+function add_color_hue_picker_to_term( int $term_id, string $key, string $label, array $opts = array() ): void {
 	$val = get_term_meta( $term_id, $key, true );
 	if ( empty( $val ) && ! empty( $opts['default'] ) ) {
 		$val = $opts['default'];
@@ -356,7 +356,7 @@ function add_color_hue_picker_to_term( int $term_id, string $key, string $label,
  * @param mixed  $val   Value.
  * @param array  $opts  Options.
  */
-function output_post_color_hue_picker_row( string $label, string $key, $val, array $opts ): void {
+function output_post_color_hue_picker_row( string $label, string $key, $val, array $opts = array() ): void {
 	wp_enqueue_script( 'colorjst' );
 	wp_enqueue_style( 'wpinc-meta' );
 	wp_enqueue_script( 'wpinc-meta-color-hue-picker' );
@@ -389,7 +389,7 @@ function output_post_color_hue_picker_row( string $label, string $key, $val, arr
  * @param mixed  $val   Value.
  * @param array  $opts  Options.
  */
-function output_term_color_hue_picker_row( string $label, string $key, $val, array $opts ): void {
+function output_term_color_hue_picker_row( string $label, string $key, $val, array $opts = array() ): void {
 	wp_enqueue_script( 'colorjst' );
 	wp_enqueue_style( 'wpinc-meta' );
 	wp_enqueue_script( 'wpinc-meta-color-hue-picker' );
