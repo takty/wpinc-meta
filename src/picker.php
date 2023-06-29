@@ -369,8 +369,11 @@ function output_post_color_hue_picker_row( string $label, string $key, $val, arr
 		<div>
 			<span class="wpinc-meta-color-hue-picker-sample"></span>
 			<input type="range" class="wpinc-meta-color-hue-picker-h" min="0" max="359">
+	<?php if ( ! empty( $def ) ) : ?>
+			<button type="button" class="button button-small wpinc-meta-color-hue-picker-default" aria-label="<?php echo esc_attr( __( 'Select default color' ) ); ?>"><?php esc_html_e( 'Default' ); ?></button>
+	<?php endif; ?>
 		</div>
-		<input type="hidden" <?php name_id( $key ); ?> value="<?php echo esc_attr( $val ); ?>" data-default-hue="<?php echo esc_attr( $def ); ?>">
+		<input type="hidden" <?php name_id( $key ); ?> value="<?php echo esc_attr( $val ); ?>" data-default-color="<?php echo esc_attr( $def ); ?>">
 		<input type="hidden" class="wpinc-meta-color-hue-picker-l">
 		<input type="hidden" class="wpinc-meta-color-hue-picker-c">
 		<script>window.addEventListener('load', function () { wpinc_meta_color_hue_picker_initialize('<?php echo esc_attr( $key ); ?>'); });</script>
@@ -400,8 +403,11 @@ function output_term_color_hue_picker_row( string $label, string $key, $val, arr
 			<div>
 				<span class="wpinc-meta-color-hue-picker-sample"></span>
 				<input type="range" class="wpinc-meta-color-hue-picker-h" min="0" max="359">
+	<?php if ( ! empty( $def ) ) : ?>
+				<button type="button" class="button button-small wpinc-meta-color-hue-picker-default" aria-label="<?php echo esc_attr( __( 'Select default color' ) ); ?>"><?php esc_html_e( 'Default' ); ?></button>
+	<?php endif; ?>
 			</div>
-			<input type="hidden" <?php name_id( $key ); ?> value="<?php echo esc_attr( $val ); ?>" data-default-hue="<?php echo esc_attr( $def ); ?>">
+			<input type="hidden" <?php name_id( $key ); ?> value="<?php echo esc_attr( $val ); ?>" data-default-color="<?php echo esc_attr( $def ); ?>">
 			<input type="hidden" class="wpinc-meta-color-hue-picker-l">
 			<input type="hidden" class="wpinc-meta-color-hue-picker-c">
 			<script>window.addEventListener('load', function () { wpinc_meta_color_hue_picker_initialize('<?php echo esc_attr( $key ); ?>'); });</script>
