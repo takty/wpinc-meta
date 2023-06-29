@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-06-06
+ * @version 2023-06-29
  */
 
 namespace wpinc\meta;
@@ -37,6 +37,10 @@ function initialize( array $args = array() ): void {
 			// For functions 'output_post_media_picker_row' and 'output_term_media_picker_row'.
 			wp_register_script( 'wpinc-meta-picker-media', \wpinc\abs_url( $url_to, './assets/lib/picker-media.min.js' ), array(), 1.0, true );
 			wp_register_script( 'wpinc-meta-media-picker', \wpinc\abs_url( $url_to, './assets/js/media-picker.min.js' ), array(), 1.0, true );
+
+			// For functions 'output_post_color_hue_picker_row' and 'output_term_color_hue_picker_row'.
+			wp_register_script( 'wpinc-meta-color-hue-picker', \wpinc\abs_url( $url_to, './assets/js/color-hue-picker.min.js' ), array(), 1.0, true );
+			wp_register_script( 'colorjst', \wpinc\abs_url( $url_to, './assets/lib/color-space.min.js' ), array(), 1.0, true );
 		}
 	);
 }

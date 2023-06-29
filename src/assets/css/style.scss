@@ -2,7 +2,7 @@
  * Fields and Pickers
  *
  * @author Takuto Yanagida
- * @version 2023-06-28
+ * @version 2023-06-29
  */
 
 $breakpoint-single-wrap: 45rem;
@@ -10,7 +10,8 @@ $breakpoint-single-wrap: 45rem;
 .wpinc-meta-field-row,
 .wpinc-meta-media-picker,
 .wpinc-meta-date-picker,
-.wpinc-meta-color-picker {
+.wpinc-meta-color-picker,
+.wpinc-meta-color-hue-picker {
 	&:not(:first-child) {
 		margin-block-start: 0.75rem;
 	}
@@ -146,6 +147,8 @@ $breakpoint-single-wrap: 45rem;
 	}
 }
 
+// ----
+
 .wpinc-meta-date-picker {
 	> div {
 		display: flex;
@@ -157,6 +160,27 @@ $breakpoint-single-wrap: 45rem;
 			margin: 0;
 		}
 	}
+}
+
+// ----
+
+.wpinc-meta-color-hue-picker > div,
+.wpinc-meta-color-hue-picker-tr td > div {
+	display: flex;
+	gap    : 0.5rem;
+}
+
+.wpinc-meta-color-hue-picker-h {
+	width: min(360px, 100% - 30px - 0.5rem);
+}
+
+.wpinc-meta-color-hue-picker-sample {
+	display   : grid;
+	min-height: 30px;
+	width     : 30px;
+
+	border       : 1px solid rgba(220, 220, 222, 0.75);
+	border-radius: 4px;
 }
 
 

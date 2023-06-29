@@ -295,8 +295,116 @@ function output_term_color_picker_row( string $label, string $key, $val, array $
 	?>
 	<tr class="form-field wpinc-meta-color-picker-tr">
 		<th scope="row"><label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label></th>
-		<td class="flatpickr input-group" id="<?php echo esc_attr( $key ); ?>_row">
+		<td id="<?php echo esc_attr( $key ); ?>_row">
 			<input type="text" <?php name_id( $key ); ?> value="<?php echo esc_attr( $val ); ?>" maxlength="7" placeholder="<?php echo esc_attr( $ph ); ?>" data-default-color="<?php echo esc_attr( $def ); ?>">
+		</td>
+	</tr>
+	<?php
+}
+
+
+// -----------------------------------------------------------------------------
+
+
+/**
+ * Adds color hue picker for post meta.
+ *
+ * @param int    $post_id Post ID.
+ * @param string $key     Key.
+ * @param string $label   Label.
+ * @param array  $opts {
+ *     Options.
+ *
+ *     @type string 'placeholder' Placeholder of the input. Default ''.
+ *     @type string 'default'     Default hue. Default ''.
+ * }
+ */
+function add_color_hue_picker_to_post( int $post_id, string $key, string $label, array $opts ): void {
+	$val = get_post_meta( $post_id, $key, true );
+	if ( empty( $val ) && ! empty( $opts['default'] ) ) {
+		$val = $opts['default'];
+	}
+	output_post_color_hue_picker_row( $label, $key, $val, $opts );
+}
+
+/**
+ * Adds color hue picker for term meta.
+ *
+ * @param int    $term_id Term ID.
+ * @param string $key     Key.
+ * @param string $label   Label.
+ * @param array  $opts {
+ *     Options.
+ *
+ *     @type string 'placeholder' Placeholder of the input. Default ''.
+ *     @type string 'default'     Default hue. Default ''.
+ * }
+ */
+function add_color_hue_picker_to_term( int $term_id, string $key, string $label, array $opts ): void {
+	$val = get_term_meta( $term_id, $key, true );
+	if ( empty( $val ) && ! empty( $opts['default'] ) ) {
+		$val = $opts['default'];
+	}
+	output_term_color_hue_picker_row( $label, $key, $val, $opts );
+}
+
+/**
+ * Outputs color hue picker row for post.
+ *
+ * @param string $label Label.
+ * @param string $key   Key.
+ * @param mixed  $val   Value.
+ * @param array  $opts  Options.
+ */
+function output_post_color_hue_picker_row( string $label, string $key, $val, array $opts ): void {
+	wp_enqueue_script( 'colorjst' );
+	wp_enqueue_style( 'wpinc-meta' );
+	wp_enqueue_script( 'wpinc-meta-color-hue-picker' );
+
+	$val = $val ?? '';
+	$def = $opts['default'] ?? '';
+	?>
+	<div id="<?php echo esc_attr( "{$key}-body" ); ?>" class="wpinc-meta-color-hue-picker">
+		<label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label>
+		<div>
+			<span class="wpinc-meta-color-hue-picker-sample"></span>
+			<input type="range" class="wpinc-meta-color-hue-picker-h" min="0" max="359">
+		</div>
+		<input type="hidden" <?php name_id( $key ); ?> value="<?php echo esc_attr( $val ); ?>" data-default-hue="<?php echo esc_attr( $def ); ?>">
+		<input type="hidden" class="wpinc-meta-color-hue-picker-l">
+		<input type="hidden" class="wpinc-meta-color-hue-picker-c">
+		<script>window.addEventListener('load', function () { wpinc_meta_color_hue_picker_initialize('<?php echo esc_attr( $key ); ?>'); });</script>
+	</div>
+	<?php
+}
+
+/**
+ * Outputs color hue picker row for term.
+ *
+ * @param string $label Label.
+ * @param string $key   Key.
+ * @param mixed  $val   Value.
+ * @param array  $opts  Options.
+ */
+function output_term_color_hue_picker_row( string $label, string $key, $val, array $opts ): void {
+	wp_enqueue_script( 'colorjst' );
+	wp_enqueue_style( 'wpinc-meta' );
+	wp_enqueue_script( 'wpinc-meta-color-hue-picker' );
+
+	$val = $val ?? '';
+	$def = $opts['default'] ?? '';
+	?>
+	<tr class="form-field wpinc-meta-color-hue-picker-tr">
+		<th scope="row"><label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label></th>
+		<td id="<?php echo esc_attr( "{$key}-body" ); ?>">
+			<div>
+				<span class="wpinc-meta-color-hue-picker-sample"></span>
+				<input type="range" class="wpinc-meta-color-hue-picker-h" min="0" max="359">
+			</div>
+			<input type="hidden" <?php name_id( $key ); ?> value="<?php echo esc_attr( $val ); ?>" data-default-hue="<?php echo esc_attr( $def ); ?>">
+			<input type="hidden" class="wpinc-meta-color-hue-picker-l">
+			<input type="hidden" class="wpinc-meta-color-hue-picker-c">
+			<script>window.addEventListener('load', function () { wpinc_meta_color_hue_picker_initialize('<?php echo esc_attr( $key ); ?>'); });</script>
 		</td>
 	</tr>
 	<?php
