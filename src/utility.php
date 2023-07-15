@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-06-02
+ * @version 2023-07-14
  */
 
 namespace wpinc\meta;
@@ -114,7 +114,10 @@ function get_term_meta_lines( int $term_id, string $key ): array {
  * @param mixed|null    $default Default value.
  */
 function set_post_meta( int $post_id, string $key, ?callable $filter = null, $default = null ): void {
-	$val = $_POST[ $key ] ?? null;  // phpcs:ignore
+	if ( ! isset( $_POST[ $key ] ) ) {  // phpcs:ignore
+		return;  // When called through bulk edit.
+	}
+	$val = $_POST[ $key ];  // phpcs:ignore
 	if ( null !== $filter && null !== $val ) {
 		$val = $filter( $val );
 	}
@@ -137,7 +140,10 @@ function set_post_meta( int $post_id, string $key, ?callable $filter = null, $de
  * @param mixed|null  $default     Default value.
  */
 function set_post_meta_with_wp_filter( int $post_id, string $key, ?string $filter_name = null, $default = null ): void {
-	$val = $_POST[ $key ] ?? null;  // phpcs:ignore
+	if ( ! isset( $_POST[ $key ] ) ) {  // phpcs:ignore
+		return;  // When called through bulk edit.
+	}
+	$val = $_POST[ $key ];  // phpcs:ignore
 	if ( null !== $filter_name && null !== $val ) {
 		$val = apply_filters( $filter_name, $val );
 	}
@@ -174,7 +180,10 @@ function set_post_meta_suffix( int $post_id, string $key, array $suffixes, ?call
  * @param mixed|null    $default Default value.
  */
 function set_term_meta( int $term_id, string $key, ?callable $filter = null, $default = null ): void {
-	$val = $_POST[ $key ] ?? null;  // phpcs:ignore
+	if ( ! isset( $_POST[ $key ] ) ) {  // phpcs:ignore
+		return;  // When called through bulk edit.
+	}
+	$val = $_POST[ $key ];  // phpcs:ignore
 	if ( null !== $filter && null !== $val ) {
 		$val = $filter( $val );
 	}
@@ -197,7 +206,10 @@ function set_term_meta( int $term_id, string $key, ?callable $filter = null, $de
  * @param mixed|null  $default     Default value.
  */
 function set_term_meta_with_wp_filter( int $term_id, string $key, ?string $filter_name = null, $default = null ): void {
-	$val = $_POST[ $key ] ?? null;  // phpcs:ignore
+	if ( ! isset( $_POST[ $key ] ) ) {  // phpcs:ignore
+		return;  // When called through bulk edit.
+	}
+	$val = $_POST[ $key ];  // phpcs:ignore
 	if ( null !== $filter_name && null !== $val ) {
 		$val = apply_filters( $filter_name, $val );
 	}
