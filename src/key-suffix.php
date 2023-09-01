@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-06-06
+ * @version 2023-09-01
  */
 
 namespace wpinc\meta;
@@ -14,11 +14,11 @@ require_once __DIR__ . '/utility.php';
 /**
  * Adds multiple input to post.
  *
- * @param int    $post_id  Post ID.
- * @param string $key      Meta key base.
- * @param array  $suffixes Meta key suffixes.
- * @param string $label    Label.
- * @param string $type     Input type. Default 'text'.
+ * @param int                $post_id  Post ID.
+ * @param string             $key      Meta key base.
+ * @param array<string|null> $suffixes Meta key suffixes.
+ * @param string             $label    Label.
+ * @param string             $type     Input type. Default 'text'.
  */
 function add_input_suffix_to_post( int $post_id, string $key, array $suffixes, string $label, string $type = 'text' ): void {
 	$vals = get_post_meta_suffix( $post_id, $key, $suffixes );
@@ -28,11 +28,11 @@ function add_input_suffix_to_post( int $post_id, string $key, array $suffixes, s
 /**
  * Adds multiple input to term.
  *
- * @param int    $term_id  Term ID.
- * @param string $key      Meta key base.
- * @param array  $suffixes Meta key suffixes.
- * @param string $label    Label.
- * @param string $type     Input type. Default 'text'.
+ * @param int                $term_id  Term ID.
+ * @param string             $key      Meta key base.
+ * @param array<string|null> $suffixes Meta key suffixes.
+ * @param string             $label    Label.
+ * @param string             $type     Input type. Default 'text'.
  */
 function add_input_suffix_to_term( int $term_id, string $key, array $suffixes, string $label, string $type = 'text' ): void {
 	$vals = get_term_meta_suffix( $term_id, $key, $suffixes );
@@ -42,11 +42,11 @@ function add_input_suffix_to_term( int $term_id, string $key, array $suffixes, s
 /**
  * Outputs input rows to post.
  *
- * @param string $label    Label.
- * @param string $key      Meta key base.
- * @param array  $suffixes Meta key suffixes.
- * @param array  $vals     Current values.
- * @param string $type     Input type. Default 'text'.
+ * @param string                    $label    Label.
+ * @param string                    $key      Meta key base.
+ * @param array<string|null>        $suffixes Meta key suffixes.
+ * @param array<string|null, mixed> $vals     Current values.
+ * @param string                    $type     Input type. Default 'text'.
  */
 function output_post_input_row_suffix( string $label, string $key, array $suffixes, array $vals, string $type = 'text' ): void {
 	wp_enqueue_style( 'wpinc-meta' );
@@ -74,11 +74,11 @@ function output_post_input_row_suffix( string $label, string $key, array $suffix
 /**
  * Outputs input rows to term.
  *
- * @param string $label    Label.
- * @param string $key      Meta key base.
- * @param array  $suffixes Meta key suffixes.
- * @param array  $vals     Current values.
- * @param string $type     Input type. Default 'text'.
+ * @param string                    $label    Label.
+ * @param string                    $key      Meta key base.
+ * @param array<string|null>        $suffixes Meta key suffixes.
+ * @param array<string|null, mixed> $vals     Current values.
+ * @param string                    $type     Input type. Default 'text'.
  */
 function output_term_input_row_suffix( string $label, string $key, array $suffixes, array $vals, string $type = 'text' ): void {
 	wp_enqueue_style( 'wpinc-meta' );
@@ -104,11 +104,11 @@ function output_term_input_row_suffix( string $label, string $key, array $suffix
 /**
  * Adds multiple textarea to post.
  *
- * @param int    $post_id  Post ID.
- * @param string $key      Meta key base.
- * @param array  $suffixes Meta key suffixes.
- * @param string $label    Label.
- * @param int    $rows     Rows attribute. Default 2.
+ * @param int                $post_id  Post ID.
+ * @param string             $key      Meta key base.
+ * @param array<string|null> $suffixes Meta key suffixes.
+ * @param string             $label    Label.
+ * @param int                $rows     Rows attribute. Default 2.
  */
 function add_textarea_suffix_to_post( int $post_id, string $key, array $suffixes, string $label, int $rows = 2 ): void {
 	$vals = get_post_meta_suffix( $post_id, $key, $suffixes );
@@ -118,11 +118,11 @@ function add_textarea_suffix_to_post( int $post_id, string $key, array $suffixes
 /**
  * Adds multiple textarea to term.
  *
- * @param int    $term_id  Term ID.
- * @param string $key      Meta key base.
- * @param array  $suffixes Meta key suffixes.
- * @param string $label    Label.
- * @param int    $rows     Rows attribute. Default 5.
+ * @param int                $term_id  Term ID.
+ * @param string             $key      Meta key base.
+ * @param array<string|null> $suffixes Meta key suffixes.
+ * @param string             $label    Label.
+ * @param int                $rows     Rows attribute. Default 5.
  */
 function add_textarea_suffix_to_term( int $term_id, string $key, array $suffixes, string $label, int $rows = 5 ): void {
 	$vals = get_term_meta_suffix( $term_id, $key, $suffixes );
@@ -132,11 +132,11 @@ function add_textarea_suffix_to_term( int $term_id, string $key, array $suffixes
 /**
  * Outputs textarea rows for post.
  *
- * @param string $label    Label.
- * @param string $key      Meta key base.
- * @param array  $suffixes Meta key suffixes.
- * @param array  $vals     Current values.
- * @param int    $rows     Rows attribute. Default 2.
+ * @param string                    $label    Label.
+ * @param string                    $key      Meta key base.
+ * @param array<string|null>        $suffixes Meta key suffixes.
+ * @param array<string|null, mixed> $vals     Current values.
+ * @param int                       $rows     Rows attribute. Default 2.
  */
 function output_post_textarea_row_suffix( string $label, string $key, array $suffixes, array $vals, int $rows = 2 ): void {
 	wp_enqueue_style( 'wpinc-meta' );
@@ -151,7 +151,7 @@ function output_post_textarea_row_suffix( string $label, string $key, array $suf
 		<div class="wpinc-meta-field-row textarea">
 			<label for="<?php echo esc_attr( $ni ); ?>"><?php echo esc_html( $lab ); ?></label>
 			<div>
-				<textarea <?php name_id( $ni ); ?> cols="64" rows="<?php echo esc_attr( $rows ); ?>"><?php echo esc_textarea( $val ); ?></textarea>
+				<textarea <?php name_id( $ni ); ?> cols="64" rows="<?php echo esc_attr( (string) $rows ); ?>"><?php echo esc_textarea( $val ); ?></textarea>
 			</div>
 		</div>
 		<?php
@@ -164,11 +164,11 @@ function output_post_textarea_row_suffix( string $label, string $key, array $suf
 /**
  * Outputs textarea rows for term.
  *
- * @param string $label    Label.
- * @param string $key      Meta key base.
- * @param array  $suffixes Meta key suffixes.
- * @param array  $vals     Current values.
- * @param int    $rows     Rows attribute. Default 2.
+ * @param string                    $label    Label.
+ * @param string                    $key      Meta key base.
+ * @param array<string|null>        $suffixes Meta key suffixes.
+ * @param array<string|null, mixed> $vals     Current values.
+ * @param int                       $rows     Rows attribute. Default 2.
  */
 function output_term_textarea_row_suffix( string $label, string $key, array $suffixes, array $vals, int $rows = 5 ): void {
 	wp_enqueue_style( 'wpinc-meta' );
@@ -181,7 +181,7 @@ function output_term_textarea_row_suffix( string $label, string $key, array $suf
 		?>
 		<tr class="form-field wpinc-meta-field-tr-multiple<?php echo esc_attr( $cls ); ?>">
 			<th scope="row"><label for="<?php echo esc_attr( $ni ); ?>"><?php echo esc_html( $lab ); ?></label></th>
-			<td><textarea <?php name_id( $ni ); ?> rows="<?php echo esc_attr( $rows ); ?>" cols="50" class="large-text"><?php echo esc_textarea( $val ); ?></textarea></td>
+			<td><textarea <?php name_id( $ni ); ?> rows="<?php echo esc_attr( (string) $rows ); ?>" cols="50" class="large-text"><?php echo esc_textarea( $val ); ?></textarea></td>
 		</tr>
 		<?php
 	}

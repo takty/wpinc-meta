@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-06-29
+ * @version 2023-09-01
  */
 
 namespace wpinc\meta;
@@ -72,8 +72,8 @@ function output_post_media_picker_row( string $label, string $key, int $media_id
 				<button type="button" class="wpinc-meta-media-picker-delete"><?php esc_html_e( 'Remove' ); ?></button>
 			</div>
 		</div>
-		<input type="hidden" <?php name_id( $key ); ?> value="<?php echo esc_attr( $media_id ); ?>" />
-		<script>window.addEventListener('load', function () { wpinc_meta_media_picker_initialize('<?php echo esc_attr( $key ); ?>'); });</script>
+		<input type="hidden" <?php name_id( $key ); ?> value="<?php echo esc_attr( (string) $media_id ); ?>" />
+		<script>window.addEventListener('load', () => { wpinc_meta_media_picker_initialize('<?php echo esc_attr( $key ); ?>'); });</script>
 	</div>
 	<?php
 }
@@ -114,8 +114,8 @@ function output_term_media_picker_row( string $label, string $key, int $media_id
 					<button type="button" class="wpinc-meta-media-picker-delete"><?php esc_html_e( 'Remove' ); ?></button>
 				</div>
 			</div>
-			<input type="hidden" <?php name_id( $key ); ?> value="<?php echo esc_attr( $media_id ); ?>" />
-			<script>window.addEventListener('load', function () { wpinc_meta_media_picker_initialize('<?php echo esc_attr( $key ); ?>'); });</script>
+			<input type="hidden" <?php name_id( $key ); ?> value="<?php echo esc_attr( (string) $media_id ); ?>" />
+			<script>window.addEventListener('load', () => { wpinc_meta_media_picker_initialize('<?php echo esc_attr( $key ); ?>'); });</script>
 		</td>
 	<?php
 }
@@ -170,7 +170,7 @@ function output_post_date_picker_row( string $label, string $key, $val ): void {
 			<input type="text" <?php name_id( $key ); ?> size="12" value="<?php echo esc_attr( $val ); ?>" data-input>
 			<a class="button" title="clear" data-clear>X</a>
 		</div>
-		<script>window.addEventListener('load', function () { flatpickr('#<?php echo esc_attr( $key ); ?>_row', { locale: '<?php echo esc_html( $loc ); ?>', wrap: true }); });</script>
+		<script>window.addEventListener('load', () => { flatpickr('#<?php echo esc_attr( $key ); ?>_row', { locale: '<?php echo esc_html( $loc ); ?>', wrap: true }); });</script>
 	</div>
 	<?php
 }
@@ -197,7 +197,7 @@ function output_term_date_picker_row( string $label, string $key, $val ): void {
 			<input type="text" <?php name_id( $key ); ?> size="12" value="<?php echo esc_attr( $val ); ?>" data-input>
 			<a class="button" title="clear" data-clear>X</a>
 		</td>
-		<script>window.addEventListener('load', function () { flatpickr('#<?php echo esc_attr( $key ); ?>_row', { locale: '<?php echo esc_html( $loc ); ?>', wrap: true }); });</script>
+		<script>window.addEventListener('load', () => { flatpickr('#<?php echo esc_attr( $key ); ?>_row', { locale: '<?php echo esc_html( $loc ); ?>', wrap: true }); });</script>
 	</tr>
 	<?php
 }
@@ -209,10 +209,10 @@ function output_term_date_picker_row( string $label, string $key, $val ): void {
 /**
  * Adds color picker for post meta.
  *
- * @param int    $post_id Post ID.
- * @param string $key     Key.
- * @param string $label   Label.
- * @param array  $opts {
+ * @param int                  $post_id Post ID.
+ * @param string               $key     Key.
+ * @param string               $label   Label.
+ * @param array<string, mixed> $opts {
  *     Options.
  *
  *     @type string 'placeholder' Placeholder of the input. Default ''.
@@ -230,10 +230,10 @@ function add_color_picker_to_post( int $post_id, string $key, string $label, arr
 /**
  * Adds color picker for term meta.
  *
- * @param int    $term_id Term ID.
- * @param string $key     Key.
- * @param string $label   Label.
- * @param array  $opts {
+ * @param int                  $term_id Term ID.
+ * @param string               $key     Key.
+ * @param string               $label   Label.
+ * @param array<string, mixed> $opts {
  *     Options.
  *
  *     @type string 'placeholder' Placeholder of the input. Default ''.
@@ -251,10 +251,10 @@ function add_color_picker_to_term( int $term_id, string $key, string $label, arr
 /**
  * Outputs color picker row for post.
  *
- * @param string $label Label.
- * @param string $key   Key.
- * @param mixed  $val   Value.
- * @param array  $opts  Options.
+ * @param string               $label Label.
+ * @param string               $key   Key.
+ * @param mixed                $val   Value.
+ * @param array<string, mixed> $opts  Options.
  */
 function output_post_color_picker_row( string $label, string $key, $val, array $opts = array() ): void {
 	wp_enqueue_script( 'wp-color-picker' );
@@ -278,10 +278,10 @@ function output_post_color_picker_row( string $label, string $key, $val, array $
 /**
  * Outputs color picker row for term.
  *
- * @param string $label Label.
- * @param string $key   Key.
- * @param mixed  $val   Value.
- * @param array  $opts  Options.
+ * @param string               $label Label.
+ * @param string               $key   Key.
+ * @param mixed                $val   Value.
+ * @param array<string, mixed> $opts  Options.
  */
 function output_term_color_picker_row( string $label, string $key, $val, array $opts = array() ): void {
 	wp_enqueue_script( 'wp-color-picker' );
@@ -309,10 +309,10 @@ function output_term_color_picker_row( string $label, string $key, $val, array $
 /**
  * Adds color hue picker for post meta.
  *
- * @param int    $post_id Post ID.
- * @param string $key     Key.
- * @param string $label   Label.
- * @param array  $opts {
+ * @param int                  $post_id Post ID.
+ * @param string               $key     Key.
+ * @param string               $label   Label.
+ * @param array<string, mixed> $opts {
  *     Options.
  *
  *     @type string 'placeholder' Placeholder of the input. Default ''.
@@ -330,10 +330,10 @@ function add_color_hue_picker_to_post( int $post_id, string $key, string $label,
 /**
  * Adds color hue picker for term meta.
  *
- * @param int    $term_id Term ID.
- * @param string $key     Key.
- * @param string $label   Label.
- * @param array  $opts {
+ * @param int                  $term_id Term ID.
+ * @param string               $key     Key.
+ * @param string               $label   Label.
+ * @param array<string, mixed> $opts {
  *     Options.
  *
  *     @type string 'placeholder' Placeholder of the input. Default ''.
@@ -351,10 +351,10 @@ function add_color_hue_picker_to_term( int $term_id, string $key, string $label,
 /**
  * Outputs color hue picker row for post.
  *
- * @param string $label Label.
- * @param string $key   Key.
- * @param mixed  $val   Value.
- * @param array  $opts  Options.
+ * @param string               $label Label.
+ * @param string               $key   Key.
+ * @param mixed                $val   Value.
+ * @param array<string, mixed> $opts  Options.
  */
 function output_post_color_hue_picker_row( string $label, string $key, $val, array $opts = array() ): void {
 	wp_enqueue_script( 'colorjst' );
@@ -376,7 +376,7 @@ function output_post_color_hue_picker_row( string $label, string $key, $val, arr
 		<input type="hidden" <?php name_id( $key ); ?> value="<?php echo esc_attr( $val ); ?>" data-default-color="<?php echo esc_attr( $def ); ?>">
 		<input type="hidden" class="wpinc-meta-color-hue-picker-l">
 		<input type="hidden" class="wpinc-meta-color-hue-picker-c">
-		<script>window.addEventListener('load', function () { wpinc_meta_color_hue_picker_initialize('<?php echo esc_attr( $key ); ?>'); });</script>
+		<script>window.addEventListener('load', () => { wpinc_meta_color_hue_picker_initialize('<?php echo esc_attr( $key ); ?>'); });</script>
 	</div>
 	<?php
 }
@@ -384,10 +384,10 @@ function output_post_color_hue_picker_row( string $label, string $key, $val, arr
 /**
  * Outputs color hue picker row for term.
  *
- * @param string $label Label.
- * @param string $key   Key.
- * @param mixed  $val   Value.
- * @param array  $opts  Options.
+ * @param string               $label Label.
+ * @param string               $key   Key.
+ * @param mixed                $val   Value.
+ * @param array<string, mixed> $opts  Options.
  */
 function output_term_color_hue_picker_row( string $label, string $key, $val, array $opts = array() ): void {
 	wp_enqueue_script( 'colorjst' );
@@ -410,7 +410,7 @@ function output_term_color_hue_picker_row( string $label, string $key, $val, arr
 			<input type="hidden" <?php name_id( $key ); ?> value="<?php echo esc_attr( $val ); ?>" data-default-color="<?php echo esc_attr( $def ); ?>">
 			<input type="hidden" class="wpinc-meta-color-hue-picker-l">
 			<input type="hidden" class="wpinc-meta-color-hue-picker-c">
-			<script>window.addEventListener('load', function () { wpinc_meta_color_hue_picker_initialize('<?php echo esc_attr( $key ); ?>'); });</script>
+			<script>window.addEventListener('load', () => { wpinc_meta_color_hue_picker_initialize('<?php echo esc_attr( $key ); ?>'); });</script>
 		</td>
 	</tr>
 	<?php

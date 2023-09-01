@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-06-23
+ * @version 2023-08-30
  */
 
 namespace wpinc\meta;
@@ -24,10 +24,12 @@ function get_the_sub_title( string $meta_key, $post = 0 ): string {
 	if ( ! $post ) {
 		return '';
 	}
-	$id    = $post->ID ?? 0;
-	$title = get_post_meta( $id, $meta_key, true );
+	$title = get_post_meta( $post->ID, $meta_key, true );
 
 	$ls = preg_split( '/<\s*br\s*\/?>/iu', $title );
+	if ( ! $ls ) {
+		return $title;
+	}
 	return implode( '<br>', array_map( 'wp_kses_post', $ls ) );
 }
 
@@ -70,8 +72,7 @@ function get_the_sub_content( string $meta_key, $post = 0 ): string {
 	if ( ! $post ) {
 		return '';
 	}
-	$id      = $post->ID ?? 0;
-	$content = get_post_meta( $id, $meta_key, true );
+	$content = get_post_meta( $post->ID, $meta_key, true );
 	return $content;
 }
 

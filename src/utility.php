@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-07-14
+ * @version 2023-08-30
  */
 
 namespace wpinc\meta;
@@ -12,15 +12,15 @@ namespace wpinc\meta;
 /**
  * Retrieves post meta values of keys with suffixes.
  *
- * @param int    $post_id   Post ID.
- * @param string $key       Meta key base.
- * @param array  $suffixes Meta key suffixes.
- * @return array Values.
+ * @param int                $post_id  Post ID.
+ * @param string             $key      Meta key base.
+ * @param array<string|null> $suffixes Meta key suffixes.
+ * @return array<string|null, mixed> Values.
  */
 function get_post_meta_suffix( int $post_id, string $key, array $suffixes ): array {
 	$vals = array();
 	foreach ( $suffixes as $sfx ) {
-		$vals[ $sfx ] = get_post_meta( $post_id, is_null( $sfx ) ? $key : "{$key}_$sfx", true );
+		$vals[ (string) $sfx ] = get_post_meta( $post_id, is_null( $sfx ) ? $key : "{$key}_$sfx", true );
 	}
 	return $vals;
 }
@@ -33,11 +33,11 @@ function get_post_meta_suffix( int $post_id, string $key, array $suffixes ): arr
  * @param string|null $format  Date format.
  * @return string Date string.
  */
-function get_post_meta_date( int $post_id, string $key, ?string $format = null ) {
+function get_post_meta_date( int $post_id, string $key, ?string $format = null ): string {
 	$format ??= get_option( 'date_format' );
 
 	$val = mb_trim( get_post_meta( $post_id, $key, true ) );
-	return mysql2date( $format, $val );
+	return (string) mysql2date( $format, $val );
 }
 
 /**
@@ -58,15 +58,15 @@ function get_post_meta_lines( int $post_id, string $key ): array {
 /**
  * Retrieves term meta values of keys with suffixes.
  *
- * @param int    $term_id   Term ID.
- * @param string $key       Meta key base.
- * @param array  $suffixes Meta key suffixes.
- * @return array Values.
+ * @param int                $term_id  Term ID.
+ * @param string             $key      Meta key base.
+ * @param array<string|null> $suffixes Meta key suffixes.
+ * @return array<string|null, mixed> Values.
  */
 function get_term_meta_suffix( int $term_id, string $key, array $suffixes ): array {
 	$vals = array();
 	foreach ( $suffixes as $sfx ) {
-		$vals[ $sfx ] = get_term_meta( $term_id, is_null( $sfx ) ? $key : "{$key}_$sfx", true );
+		$vals[ (string) $sfx ] = get_term_meta( $term_id, is_null( $sfx ) ? $key : "{$key}_$sfx", true );
 	}
 	return $vals;
 }
@@ -79,11 +79,11 @@ function get_term_meta_suffix( int $term_id, string $key, array $suffixes ): arr
  * @param string|null $format  Date format.
  * @return string Date string.
  */
-function get_term_meta_date( int $term_id, string $key, ?string $format = null ) {
+function get_term_meta_date( int $term_id, string $key, ?string $format = null ): string {
 	$format ??= get_option( 'date_format' );
 
 	$val = mb_trim( get_term_meta( $term_id, $key, true ) );
-	return mysql2date( $format, $val );
+	return (string) mysql2date( $format, $val );
 }
 
 /**
@@ -160,10 +160,10 @@ function set_post_meta_with_wp_filter( int $post_id, string $key, ?string $filte
 /**
  * Stores post meta values of keys with suffixes.
  *
- * @param int           $post_id   Post ID.
- * @param string        $key       Meta key base.
- * @param array         $suffixes Meta key suffixes.
- * @param callable|null $filter    Filter function.
+ * @param int                $post_id  Post ID.
+ * @param string             $key      Meta key base.
+ * @param array<string|null> $suffixes Meta key suffixes.
+ * @param callable|null      $filter   Filter function.
  */
 function set_post_meta_suffix( int $post_id, string $key, array $suffixes, ?callable $filter = null ): void {
 	foreach ( $suffixes as $sfx ) {
@@ -226,10 +226,10 @@ function set_term_meta_with_wp_filter( int $term_id, string $key, ?string $filte
 /**
  * Stores term meta values of keys with suffixes.
  *
- * @param int           $term_id   Term ID.
- * @param string        $key       Meta key base.
- * @param array         $suffixes Meta key suffixes.
- * @param callable|null $filter    Filter function.
+ * @param int                $term_id  Term ID.
+ * @param string             $key      Meta key base.
+ * @param array<string|null> $suffixes Meta key suffixes.
+ * @param callable|null      $filter   Filter function.
  */
 function set_term_meta_suffix( int $term_id, string $key, array $suffixes, ?callable $filter = null ): void {
 	foreach ( $suffixes as $sfx ) {
@@ -248,7 +248,7 @@ function set_term_meta_suffix( int $term_id, string $key, array $suffixes, ?call
  * @return string Trimmed string.
  */
 function mb_trim( string $str ): string {
-	return preg_replace( '/\A[\p{C}\p{Z}]++|[\p{C}\p{Z}]++\z/u', '', $str );
+	return preg_replace( '/\A[\p{C}\p{Z}]++|[\p{C}\p{Z}]++\z/u', '', $str ) ?? $str;
 }
 
 /**
@@ -270,10 +270,12 @@ function normalize_date( string $str ): string {
 	$str  = mb_convert_kana( $str, 'n', 'utf-8' );
 	$nums = preg_split( '/\D/', $str );
 	$vals = array();
-	foreach ( $nums as $num ) {
-		$v = (int) trim( $num );
-		if ( 0 !== $v ) {
-			$vals[] = $v;
+	if ( $nums ) {
+		foreach ( $nums as $num ) {
+			$v = (int) trim( $num );
+			if ( 0 !== $v ) {
+				$vals[] = $v;
+			}
 		}
 	}
 	if ( 3 <= count( $vals ) ) {
@@ -299,7 +301,7 @@ function normalize_youtube_video_id( string $str ): string {
 			return trim( $pu['path'], '/' );
 		}
 		if ( 'www.youtube.com' === $pu['host'] ) {
-			$q  = $pu['query'];
+			$q  = $pu['query'] ?? '';
 			$qs = explode( '&', $q );
 
 			foreach ( $qs as $qp ) {

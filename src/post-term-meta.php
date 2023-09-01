@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2022-01-26
+ * @version 2023-09-01
  */
 
 namespace wpinc\meta\post_term_meta;
@@ -12,7 +12,7 @@ namespace wpinc\meta\post_term_meta;
 /**
  * Initialize post term meta.
  *
- * @param array $args {
+ * @param array<string, mixed> $args {
  *     Arguments.
  *
  *     @type string 'base_meta_key' Base meta key. Default '_pmk'.
@@ -110,9 +110,9 @@ function update_post_term_meta( int $post_id, int $term_id, string $meta_key, $m
  *
  * @access private
  *
- * @param array $data    An array of slashed, sanitized, and processed post data.
- * @param array $postarr An array of sanitized (and slashed) but otherwise unmodified post data.
- * @return array Post data.
+ * @param array<string, mixed> $data    An array of slashed, sanitized, and processed post data.
+ * @param array<string, mixed> $postarr An array of sanitized (and slashed) but otherwise unmodified post data.
+ * @return array<string, mixed> Post data.
  */
 function _cb_wp_insert_post_data( array $data, array $postarr ): array {
 	$inst = _get_instance();
@@ -142,7 +142,7 @@ function _cb_wp_insert_post_data( array $data, array $postarr ): array {
  * @access private
  *
  * @param int $post_id Post ID.
- * @return array Related meta keys.
+ * @return string[] Related meta keys.
  */
 function _get_related_keys( int $post_id ): array {
 	$inst = _get_instance();
@@ -165,8 +165,8 @@ function _get_related_keys( int $post_id ): array {
  *
  * @access private
  *
- * @param array $postarr An array of sanitized (and slashed) but otherwise unmodified post data.
- * @return array Term IDs.
+ * @param array<string, mixed> $postarr An array of sanitized (and slashed) but otherwise unmodified post data.
+ * @return int[] Term IDs.
  */
 function _get_term_ids( array $postarr ): array {
 	if ( ! isset( $postarr['tax_input'] ) ) {

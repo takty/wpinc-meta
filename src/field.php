@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-06-29
+ * @version 2023-09-01
  */
 
 namespace wpinc\meta;
@@ -14,7 +14,7 @@ require_once __DIR__ . '/assets/asset-url.php';
 /**
  * Initializes fields.
  *
- * @param array $args {
+ * @param array<string, mixed> $args {
  *     (Optional) Array of arguments.
  *
  *     @type string 'url_to' URL to this script.
@@ -27,20 +27,20 @@ function initialize( array $args = array() ): void {
 		'admin_enqueue_scripts',
 		function () use ( $url_to ) {
 			// Styles for various fields and pickers.
-			wp_register_style( 'wpinc-meta', \wpinc\abs_url( $url_to, './assets/css/style.min.css' ), array(), 1.0 );
+			wp_register_style( 'wpinc-meta', \wpinc\abs_url( $url_to, './assets/css/style.min.css' ), array(), '1.0' );
 
 			// For functions 'output_post_date_picker_row' and 'output_term_date_picker_row'.
-			wp_register_script( 'flatpickr', \wpinc\abs_url( $url_to, './assets/lib/flatpickr.min.js' ), array(), 1.0, true );
-			wp_register_script( 'flatpickr.l10n.ja', \wpinc\abs_url( $url_to, './assets/lib/flatpickr.l10n.ja.min.js' ), array(), 1.0, true );
-			wp_register_style( 'flatpickr', \wpinc\abs_url( $url_to, './assets/lib/flatpickr.min.css' ), array(), 1.0 );
+			wp_register_script( 'flatpickr', \wpinc\abs_url( $url_to, './assets/lib/flatpickr.min.js' ), array(), '1.0', true );
+			wp_register_script( 'flatpickr.l10n.ja', \wpinc\abs_url( $url_to, './assets/lib/flatpickr.l10n.ja.min.js' ), array(), '1.0', true );
+			wp_register_style( 'flatpickr', \wpinc\abs_url( $url_to, './assets/lib/flatpickr.min.css' ), array(), '1.0' );
 
 			// For functions 'output_post_media_picker_row' and 'output_term_media_picker_row'.
-			wp_register_script( 'wpinc-meta-picker-media', \wpinc\abs_url( $url_to, './assets/lib/picker-media.min.js' ), array(), 1.0, true );
-			wp_register_script( 'wpinc-meta-media-picker', \wpinc\abs_url( $url_to, './assets/js/media-picker.min.js' ), array(), 1.0, true );
+			wp_register_script( 'wpinc-meta-picker-media', \wpinc\abs_url( $url_to, './assets/lib/picker-media.min.js' ), array(), '1.0', true );
+			wp_register_script( 'wpinc-meta-media-picker', \wpinc\abs_url( $url_to, './assets/js/media-picker.min.js' ), array(), '1.0', true );
 
 			// For functions 'output_post_color_hue_picker_row' and 'output_term_color_hue_picker_row'.
-			wp_register_script( 'wpinc-meta-color-hue-picker', \wpinc\abs_url( $url_to, './assets/js/color-hue-picker.min.js' ), array(), 1.0, true );
-			wp_register_script( 'colorjst', \wpinc\abs_url( $url_to, './assets/lib/color-space.min.js' ), array(), 1.0, true );
+			wp_register_script( 'wpinc-meta-color-hue-picker', \wpinc\abs_url( $url_to, './assets/js/color-hue-picker.min.js' ), array(), '1.0', true );
+			wp_register_script( 'colorjst', \wpinc\abs_url( $url_to, './assets/lib/color-space.min.js' ), array(), '1.0', true );
 		}
 	);
 }
@@ -52,7 +52,7 @@ function initialize( array $args = array() ): void {
 /**
  * Adds a separator to post.
  */
-function add_separator_to_post() {
+function add_separator_to_post(): void {
 	output_post_separator();
 }
 
@@ -85,10 +85,10 @@ function add_textarea_to_post( int $post_id, string $key, string $label, int $ro
 /**
  * Adds a rich editor to post.
  *
- * @param int    $post_id  Post ID.
- * @param string $key      Meta key.
- * @param string $label    Label.
- * @param array  $settings Settings for wp_editor.
+ * @param int                  $post_id  Post ID.
+ * @param string               $key      Meta key.
+ * @param string               $label    Label.
+ * @param array<string, mixed> $settings Settings for wp_editor.
  */
 function add_rich_editor_to_post( int $post_id, string $key, string $label, array $settings = array() ): void {
 	$val = get_post_meta( $post_id, $key, true );
@@ -134,7 +134,9 @@ function add_term_select_to_post( int $post_id, string $key, string $label, stri
 function add_related_term_select_to_post( int $post_id, string $key, string $label, string $taxonomy, string $field = 'slug' ): void {
 	$val   = get_post_meta( $post_id, $key, true );
 	$terms = get_the_terms( $post_id, $taxonomy );
-	output_post_term_select_row( $label, $key, $terms, $val, $field );
+	if ( is_array( $terms ) ) {
+		output_post_term_select_row( $label, $key, $terms, $val, $field );
+	}
 }
 
 
@@ -144,7 +146,7 @@ function add_related_term_select_to_post( int $post_id, string $key, string $lab
 /**
  * Adds a separator to term.
  */
-function add_separator_to_term() {
+function add_separator_to_term(): void {
 	output_term_separator();
 }
 
@@ -177,10 +179,10 @@ function add_textarea_to_term( int $term_id, string $key, string $label, int $ro
 /**
  * Adds a rich editor to term.
  *
- * @param int    $term_id  Term ID.
- * @param string $key      Meta key.
- * @param string $label    Label.
- * @param array  $settings Settings for wp_editor.
+ * @param int                  $term_id  Term ID.
+ * @param string               $key      Meta key.
+ * @param string               $label    Label.
+ * @param array<string, mixed> $settings Settings for wp_editor.
  */
 function add_rich_editor_to_term( int $term_id, string $key, string $label, array $settings = array() ): void {
 	$val = get_term_meta( $term_id, $key, true );
@@ -250,7 +252,7 @@ function output_post_textarea_row( string $label, string $key, $val, int $rows =
 	<div class="wpinc-meta-field-row textarea">
 		<label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label>
 		<div>
-			<textarea <?php name_id( $key ); ?> cols="64" rows="<?php echo esc_attr( $rows ); ?>"><?php echo esc_textarea( $val ); ?></textarea>
+			<textarea <?php name_id( $key ); ?> cols="64" rows="<?php echo esc_attr( (string) $rows ); ?>"><?php echo esc_textarea( $val ); ?></textarea>
 		</div>
 	</div>
 	<?php
@@ -259,10 +261,10 @@ function output_post_textarea_row( string $label, string $key, $val, int $rows =
 /**
  * Outputs a rich editor row to post.
  *
- * @param string $label    Label.
- * @param string $key      Meta key.
- * @param mixed  $val      Current value.
- * @param array  $settings Settings for wp_editor.
+ * @param string               $label    Label.
+ * @param string               $key      Meta key.
+ * @param mixed                $val      Current value.
+ * @param array<string, mixed> $settings Settings for wp_editor.
  */
 function output_post_rich_editor_row( string $label, string $key, $val, array $settings = array() ): void {
 	wp_enqueue_style( 'wpinc-meta' );
@@ -312,7 +314,7 @@ function output_post_checkbox_row( string $label, string $key, bool $checked = f
  */
 function output_post_term_select_row( string $label, string $key, $taxonomy_or_terms, $val, string $field = 'slug' ): void {
 	wp_enqueue_style( 'wpinc-meta' );
-	$terms = is_array( $taxonomy_or_terms ) ? $taxonomy_or_terms : get_terms( $taxonomy_or_terms );
+	$terms = is_array( $taxonomy_or_terms ) ? $taxonomy_or_terms : get_terms( array( 'taxonomy' => $taxonomy_or_terms ) );
 	if ( ! is_array( $terms ) ) {
 		$terms = array();
 	}
@@ -383,7 +385,7 @@ function output_term_textarea_row( string $label, string $key, $val, int $rows =
 	?>
 	<tr class="form-field wpinc-meta-field-tr textarea">
 		<th scope="row"><label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label></th>
-		<td><textarea <?php name_id( $key ); ?> rows="<?php echo esc_attr( $rows ); ?>" cols="50" class="large-text"><?php echo esc_textarea( $val ); ?></textarea></td>
+		<td><textarea <?php name_id( $key ); ?> rows="<?php echo esc_attr( (string) $rows ); ?>" cols="50" class="large-text"><?php echo esc_textarea( $val ); ?></textarea></td>
 	</tr>
 	<?php
 }
@@ -391,10 +393,10 @@ function output_term_textarea_row( string $label, string $key, $val, int $rows =
 /**
  * Outputs a rich editor row to term.
  *
- * @param string $label    Label.
- * @param string $key      Meta key.
- * @param mixed  $val      Current value.
- * @param array  $settings Settings for wp_editor.
+ * @param string               $label    Label.
+ * @param string               $key      Meta key.
+ * @param mixed                $val      Current value.
+ * @param array<string, mixed> $settings Settings for wp_editor.
  */
 function output_term_rich_editor_row( string $label, string $key, $val, array $settings = array() ): void {
 	wp_enqueue_style( 'wpinc-meta' );
