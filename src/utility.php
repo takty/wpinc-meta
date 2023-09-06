@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-08-30
+ * @version 2023-09-06
  */
 
 namespace wpinc\meta;
@@ -34,7 +34,7 @@ function get_post_meta_suffix( int $post_id, string $key, array $suffixes ): arr
  * @return string Date string.
  */
 function get_post_meta_date( int $post_id, string $key, ?string $format = null ): string {
-	$format ??= get_option( 'date_format' );
+	$format = $format ?? get_option( 'date_format' );  // For PHP 7.3.
 
 	$val = mb_trim( get_post_meta( $post_id, $key, true ) );
 	return (string) mysql2date( $format, $val );
@@ -80,7 +80,7 @@ function get_term_meta_suffix( int $term_id, string $key, array $suffixes ): arr
  * @return string Date string.
  */
 function get_term_meta_date( int $term_id, string $key, ?string $format = null ): string {
-	$format ??= get_option( 'date_format' );
+	$format = $format ?? get_option( 'date_format' );  // For PHP 7.3.
 
 	$val = mb_trim( get_term_meta( $term_id, $key, true ) );
 	return (string) mysql2date( $format, $val );
