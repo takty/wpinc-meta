@@ -4,12 +4,13 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-09-01
+ * @version 2023-10-14
  */
 
 namespace wpinc\meta;
 
 require_once __DIR__ . '/assets/asset-url.php';
+require_once __DIR__ . '/utility.php';
 
 /**
  * Initializes fields.
@@ -66,6 +67,7 @@ function add_separator_to_post(): void {
  */
 function add_input_to_post( int $post_id, string $key, string $label, string $type = 'text' ): void {
 	$val = get_post_meta( $post_id, $key, true );
+	$val = is_string( $val ) ? $val : '';
 	output_post_input_row( $label, $key, $val, $type );
 }
 
@@ -79,6 +81,7 @@ function add_input_to_post( int $post_id, string $key, string $label, string $ty
  */
 function add_textarea_to_post( int $post_id, string $key, string $label, int $rows = 2 ): void {
 	$val = get_post_meta( $post_id, $key, true );
+	$val = is_string( $val ) ? $val : '';
 	output_post_textarea_row( $label, $key, $val, $rows );
 }
 
@@ -92,6 +95,7 @@ function add_textarea_to_post( int $post_id, string $key, string $label, int $ro
  */
 function add_rich_editor_to_post( int $post_id, string $key, string $label, array $settings = array() ): void {
 	$val = get_post_meta( $post_id, $key, true );
+	$val = is_string( $val ) ? $val : '';
 	output_post_rich_editor_row( $label, $key, $val, $settings );
 }
 
@@ -119,6 +123,7 @@ function add_checkbox_to_post( int $post_id, string $key, string $label, string 
  */
 function add_term_select_to_post( int $post_id, string $key, string $label, string $taxonomy, string $field = 'slug' ): void {
 	$val = get_post_meta( $post_id, $key, true );
+	$val = is_string( $val ) ? $val : '';
 	output_post_term_select_row( $label, $key, $taxonomy, $val, $field );
 }
 
@@ -133,6 +138,7 @@ function add_term_select_to_post( int $post_id, string $key, string $label, stri
  */
 function add_related_term_select_to_post( int $post_id, string $key, string $label, string $taxonomy, string $field = 'slug' ): void {
 	$val   = get_post_meta( $post_id, $key, true );
+	$val   = is_string( $val ) ? $val : '';
 	$terms = get_the_terms( $post_id, $taxonomy );
 	if ( is_array( $terms ) ) {
 		output_post_term_select_row( $label, $key, $terms, $val, $field );
@@ -160,6 +166,7 @@ function add_separator_to_term(): void {
  */
 function add_input_to_term( int $term_id, string $key, string $label, string $type = 'text' ): void {
 	$val = get_term_meta( $term_id, $key, true );
+	$val = is_string( $val ) ? $val : '';
 	output_term_input_row( $label, $key, $val, $type );
 }
 
@@ -173,6 +180,7 @@ function add_input_to_term( int $term_id, string $key, string $label, string $ty
  */
 function add_textarea_to_term( int $term_id, string $key, string $label, int $rows = 2 ): void {
 	$val = get_term_meta( $term_id, $key, true );
+	$val = is_string( $val ) ? $val : '';
 	output_term_textarea_row( $label, $key, $val, $rows );
 }
 
@@ -186,6 +194,7 @@ function add_textarea_to_term( int $term_id, string $key, string $label, int $ro
  */
 function add_rich_editor_to_term( int $term_id, string $key, string $label, array $settings = array() ): void {
 	$val = get_term_meta( $term_id, $key, true );
+	$val = is_string( $val ) ? $val : '';
 	output_term_rich_editor_row( $label, $key, $val, $settings );
 }
 
@@ -221,12 +230,11 @@ function output_post_separator(): void {
  *
  * @param string $label Label.
  * @param string $key   Meta key.
- * @param mixed  $val   Current value.
+ * @param string $val   Current value.
  * @param string $type  Input type. Default 'text'.
  */
-function output_post_input_row( string $label, string $key, $val, string $type = 'text' ): void {
+function output_post_input_row( string $label, string $key, string $val, string $type = 'text' ): void {
 	wp_enqueue_style( 'wpinc-meta' );
-	$val = $val ?? '';
 	?>
 	<div class="wpinc-meta-field-row <?php echo esc_attr( $type ); ?>">
 		<label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label>
@@ -242,12 +250,11 @@ function output_post_input_row( string $label, string $key, $val, string $type =
  *
  * @param string $label Label.
  * @param string $key   Meta key.
- * @param mixed  $val   Current value.
+ * @param string $val   Current value.
  * @param int    $rows  Rows attribute. Default 2.
  */
-function output_post_textarea_row( string $label, string $key, $val, int $rows = 2 ): void {
+function output_post_textarea_row( string $label, string $key, string $val, int $rows = 2 ): void {
 	wp_enqueue_style( 'wpinc-meta' );
-	$val = $val ?? '';
 	?>
 	<div class="wpinc-meta-field-row textarea">
 		<label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label>
@@ -261,12 +268,14 @@ function output_post_textarea_row( string $label, string $key, $val, int $rows =
 /**
  * Outputs a rich editor row to post.
  *
+ * @psalm-suppress ArgumentTypeCoercion
+ *
  * @param string               $label    Label.
  * @param string               $key      Meta key.
- * @param mixed                $val      Current value.
+ * @param string               $val      Current value.
  * @param array<string, mixed> $settings Settings for wp_editor.
  */
-function output_post_rich_editor_row( string $label, string $key, $val, array $settings = array() ): void {
+function output_post_rich_editor_row( string $label, string $key, string $val, array $settings = array() ): void {
 	wp_enqueue_style( 'wpinc-meta' );
 	$cls = '';
 	if ( isset( $settings['media_buttons'] ) && false === $settings['media_buttons'] ) {
@@ -275,7 +284,7 @@ function output_post_rich_editor_row( string $label, string $key, $val, array $s
 	?>
 	<div class="wpinc-meta-field-rich-editor<?php echo esc_attr( $cls ); ?>">
 		<label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label>
-		<?php wp_editor( $val, $key, $settings ); ?>
+		<?php wp_editor( $val, $key, $settings );  // @phpstan-ignore-line ?>
 	</div>
 	<?php
 }
@@ -312,11 +321,18 @@ function output_post_checkbox_row( string $label, string $key, bool $checked = f
  * @param string            $val               Current value.
  * @param string            $field             Term field.
  */
-function output_post_term_select_row( string $label, string $key, $taxonomy_or_terms, $val, string $field = 'slug' ): void {
+function output_post_term_select_row( string $label, string $key, $taxonomy_or_terms, string $val, string $field = 'slug' ): void {
 	wp_enqueue_style( 'wpinc-meta' );
-	$terms = is_array( $taxonomy_or_terms ) ? $taxonomy_or_terms : get_terms( array( 'taxonomy' => $taxonomy_or_terms ) );
-	if ( ! is_array( $terms ) ) {
-		$terms = array();
+	if ( is_array( $taxonomy_or_terms ) ) {
+		$terms = $taxonomy_or_terms;
+	} else {
+		/**
+		 * Terms. This is determined by $args['fields'] being 'all'.
+		 *
+		 * @var \WP_Term[]|\WP_Error $terms
+		 */
+		$terms = get_terms( array( 'taxonomy' => $taxonomy_or_terms ) );
+		$terms = is_array( $terms ) ? $terms : array();
 	}
 	?>
 	<div class="wpinc-meta-field-row select">
@@ -327,7 +343,10 @@ function output_post_term_select_row( string $label, string $key, $taxonomy_or_t
 	foreach ( $terms as $t ) {
 		$name = $t->name;
 		$tf   = get_term_field( $field, $t, '', 'raw' );
-		echo '<option value="' . esc_attr( $val ) . '"' . selected( $tf, $val, false ) . '>' . esc_html( $name ) . '</option>';
+		if ( ! is_string( $tf ) ) {
+			continue;
+		}
+		echo '<option value="' . esc_attr( $tf ) . '"' . selected( $tf, $val, false ) . '>' . esc_html( $name ) . '</option>';
 	}
 	?>
 			</select>
@@ -357,12 +376,11 @@ function output_term_separator(): void {
  *
  * @param string $label Label.
  * @param string $key   Meta key.
- * @param mixed  $val   Current value.
+ * @param string $val   Current value.
  * @param string $type  Input type. Default 'text'.
  */
-function output_term_input_row( string $label, string $key, $val, string $type = 'text' ): void {
+function output_term_input_row( string $label, string $key, string $val, string $type = 'text' ): void {
 	wp_enqueue_style( 'wpinc-meta' );
-	$val = $val ?? '';
 	?>
 	<tr class="form-field wpinc-meta-field-tr <?php echo esc_attr( $type ); ?>">
 		<th scope="row"><label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label></th>
@@ -376,12 +394,11 @@ function output_term_input_row( string $label, string $key, $val, string $type =
  *
  * @param string $label Label.
  * @param string $key   Meta key.
- * @param mixed  $val   Current value.
+ * @param string $val   Current value.
  * @param int    $rows  Rows attribute. Default 2.
  */
-function output_term_textarea_row( string $label, string $key, $val, int $rows = 2 ): void {
+function output_term_textarea_row( string $label, string $key, string $val, int $rows = 2 ): void {
 	wp_enqueue_style( 'wpinc-meta' );
-	$val = $val ?? '';
 	?>
 	<tr class="form-field wpinc-meta-field-tr textarea">
 		<th scope="row"><label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label></th>
@@ -393,12 +410,14 @@ function output_term_textarea_row( string $label, string $key, $val, int $rows =
 /**
  * Outputs a rich editor row to term.
  *
+ * @psalm-suppress ArgumentTypeCoercion
+ *
  * @param string               $label    Label.
  * @param string               $key      Meta key.
- * @param mixed                $val      Current value.
+ * @param string               $val      Current value.
  * @param array<string, mixed> $settings Settings for wp_editor.
  */
-function output_term_rich_editor_row( string $label, string $key, $val, array $settings = array() ): void {
+function output_term_rich_editor_row( string $label, string $key, string $val, array $settings = array() ): void {
 	wp_enqueue_style( 'wpinc-meta' );
 	$cls = '';
 	if ( isset( $settings['media_buttons'] ) && false === $settings['media_buttons'] ) {
@@ -407,7 +426,7 @@ function output_term_rich_editor_row( string $label, string $key, $val, array $s
 	?>
 	<tr class="form-field wpinc-meta-field-rich-editor-tr<?php echo esc_attr( $cls ); ?>">
 		<th scope="row"><label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label></th>
-		<td><?php wp_editor( $val, $key, $settings ); ?></td>
+		<td><?php wp_editor( $val, $key, $settings );  // @phpstan-ignore-line ?></td>
 	</tr>
 	<?php
 }

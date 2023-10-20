@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-09-01
+ * @version 2023-10-14
  */
 
 namespace wpinc\meta;
@@ -42,11 +42,11 @@ function add_input_suffix_to_term( int $term_id, string $key, array $suffixes, s
 /**
  * Outputs input rows to post.
  *
- * @param string                    $label    Label.
- * @param string                    $key      Meta key base.
- * @param array<string|null>        $suffixes Meta key suffixes.
- * @param array<string|null, mixed> $vals     Current values.
- * @param string                    $type     Input type. Default 'text'.
+ * @param string               $label    Label.
+ * @param string               $key      Meta key base.
+ * @param array<string|null>   $suffixes Meta key suffixes.
+ * @param array<string, mixed> $vals     Current values.
+ * @param string               $type     Input type. Default 'text'.
  */
 function output_post_input_row_suffix( string $label, string $key, array $suffixes, array $vals, string $type = 'text' ): void {
 	wp_enqueue_style( 'wpinc-meta' );
@@ -54,7 +54,7 @@ function output_post_input_row_suffix( string $label, string $key, array $suffix
 	<div class="wpinc-meta-field-group">
 	<?php
 	foreach ( $suffixes as $sfx ) {
-		$val = $vals[ $sfx ] ?? '';
+		$val = is_string( $vals[ (string) $sfx ] ) ? $vals[ (string) $sfx ] : '';
 		$ni  = is_null( $sfx ) ? $key : "{$key}_$sfx";
 		$lab = is_null( $sfx ) ? $label : "$label [$sfx]";
 		?>
@@ -74,17 +74,17 @@ function output_post_input_row_suffix( string $label, string $key, array $suffix
 /**
  * Outputs input rows to term.
  *
- * @param string                    $label    Label.
- * @param string                    $key      Meta key base.
- * @param array<string|null>        $suffixes Meta key suffixes.
- * @param array<string|null, mixed> $vals     Current values.
- * @param string                    $type     Input type. Default 'text'.
+ * @param string               $label    Label.
+ * @param string               $key      Meta key base.
+ * @param array<string|null>   $suffixes Meta key suffixes.
+ * @param array<string, mixed> $vals     Current values.
+ * @param string               $type     Input type. Default 'text'.
  */
 function output_term_input_row_suffix( string $label, string $key, array $suffixes, array $vals, string $type = 'text' ): void {
 	wp_enqueue_style( 'wpinc-meta' );
 
 	foreach ( $suffixes as $idx => $sfx ) {
-		$val = $vals[ $sfx ] ?? '';
+		$val = is_string( $vals[ (string) $sfx ] ) ? $vals[ (string) $sfx ] : '';
 		$ni  = is_null( $sfx ) ? $key : "{$key}_$sfx";
 		$lab = is_null( $sfx ) ? $label : "$label [$sfx]";
 		$cls = ( 0 === $idx ) ? ' wpinc-meta-field-tr-first' : ( ( count( $suffixes ) - 1 === $idx ) ? ' wpinc-meta-field-tr-last' : '' );
@@ -132,11 +132,11 @@ function add_textarea_suffix_to_term( int $term_id, string $key, array $suffixes
 /**
  * Outputs textarea rows for post.
  *
- * @param string                    $label    Label.
- * @param string                    $key      Meta key base.
- * @param array<string|null>        $suffixes Meta key suffixes.
- * @param array<string|null, mixed> $vals     Current values.
- * @param int                       $rows     Rows attribute. Default 2.
+ * @param string               $label    Label.
+ * @param string               $key      Meta key base.
+ * @param array<string|null>   $suffixes Meta key suffixes.
+ * @param array<string, mixed> $vals     Current values.
+ * @param int                  $rows     Rows attribute. Default 2.
  */
 function output_post_textarea_row_suffix( string $label, string $key, array $suffixes, array $vals, int $rows = 2 ): void {
 	wp_enqueue_style( 'wpinc-meta' );
@@ -144,7 +144,7 @@ function output_post_textarea_row_suffix( string $label, string $key, array $suf
 	<div class="wpinc-meta-field-group">
 	<?php
 	foreach ( $suffixes as $sfx ) {
-		$val = $vals[ $sfx ] ?? '';
+		$val = is_string( $vals[ (string) $sfx ] ) ? $vals[ (string) $sfx ] : '';
 		$ni  = is_null( $sfx ) ? $key : "{$key}_$sfx";
 		$lab = is_null( $sfx ) ? $label : "$label [$sfx]";
 		?>
@@ -164,17 +164,17 @@ function output_post_textarea_row_suffix( string $label, string $key, array $suf
 /**
  * Outputs textarea rows for term.
  *
- * @param string                    $label    Label.
- * @param string                    $key      Meta key base.
- * @param array<string|null>        $suffixes Meta key suffixes.
- * @param array<string|null, mixed> $vals     Current values.
- * @param int                       $rows     Rows attribute. Default 2.
+ * @param string               $label    Label.
+ * @param string               $key      Meta key base.
+ * @param array<string|null>   $suffixes Meta key suffixes.
+ * @param array<string, mixed> $vals     Current values.
+ * @param int                  $rows     Rows attribute. Default 2.
  */
 function output_term_textarea_row_suffix( string $label, string $key, array $suffixes, array $vals, int $rows = 5 ): void {
 	wp_enqueue_style( 'wpinc-meta' );
 
 	foreach ( $suffixes as $idx => $sfx ) {
-		$val = $vals[ $sfx ] ?? '';
+		$val = is_string( $vals[ (string) $sfx ] ) ? $vals[ (string) $sfx ] : '';
 		$ni  = is_null( $sfx ) ? $key : "{$key}_$sfx";
 		$lab = is_null( $sfx ) ? $label : "$label [$sfx]";
 		$cls = ( 0 === $idx ) ? ' wpinc-meta-field-tr-first' : ( ( count( $suffixes ) - 1 === $idx ) ? ' wpinc-meta-field-tr-last' : '' );

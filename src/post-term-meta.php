@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-09-01
+ * @version 2023-10-14
  */
 
 namespace wpinc\meta\post_term_meta;
@@ -24,7 +24,7 @@ function initialize( array $args = array() ): void {
 		'base_meta_key' => '_ptm',
 	);
 
-	$inst->pmk_base = $args['base_meta_key'];
+	$inst->pmk_base = $args['base_meta_key'];  // @phpstan-ignore-line
 	add_filter( 'wp_insert_post_data', '\wpinc\meta\post_term_meta\_cb_wp_insert_post_data', 99, 2 );
 }
 
@@ -117,7 +117,11 @@ function update_post_term_meta( int $post_id, int $term_id, string $meta_key, $m
 function _cb_wp_insert_post_data( array $data, array $postarr ): array {
 	$inst = _get_instance();
 
-	$post_id  = $postarr['ID'];
+	$post_id = $postarr['ID'];
+	if ( ! is_numeric( $post_id ) ) {
+		return $data;
+	}
+	$post_id  = (int) $post_id;
 	$pt_keys  = _get_related_keys( $post_id );
 	$term_ids = _get_term_ids( $postarr );
 
@@ -148,11 +152,11 @@ function _get_related_keys( int $post_id ): array {
 	$inst = _get_instance();
 
 	$pms = get_post_meta( $post_id );
-	if ( empty( $pms ) ) {
+	if ( ! is_array( $pms ) ) {
 		return array();
 	}
 	$ret = array();
-	foreach ( $pms as $key => $val ) {
+	foreach ( $pms as $key => $_val ) {
 		if ( 0 === strpos( $key, "{$inst->pmk_base}_" ) ) {
 			$ret[] = $key;
 		}
@@ -169,11 +173,11 @@ function _get_related_keys( int $post_id ): array {
  * @return int[] Term IDs.
  */
 function _get_term_ids( array $postarr ): array {
-	if ( ! isset( $postarr['tax_input'] ) ) {
+	if ( ! isset( $postarr['tax_input'] ) || ! is_array( $postarr['tax_input'] ) ) {
 		return array();
 	}
 	$ret = array();
-	foreach ( $postarr['tax_input'] as $tx => $ids ) {
+	foreach ( $postarr['tax_input'] as $_tx => $ids ) {
 		if ( count( $ids ) <= 1 ) {
 			continue;
 		}
@@ -194,7 +198,9 @@ function _get_term_ids( array $postarr ): array {
  *
  * @access private
  *
- * @return object Instance.
+ * @return object{
+ *     pmk_base: string,
+ * } Instance.
  */
 function _get_instance(): object {
 	static $values = null;
@@ -207,7 +213,7 @@ function _get_instance(): object {
 		 *
 		 * @var string
 		 */
-		public $pmk_base;
+		public $pmk_base = '';
 	};
 	return $values;
 }

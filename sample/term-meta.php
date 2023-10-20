@@ -4,17 +4,22 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-06-29
+ * @version 2023-10-13
  */
 
 namespace wpinc\meta\sample;
+
+require_once __DIR__ . '/../src/field.php';
+require_once __DIR__ . '/../src/key-suffix.php';
+require_once __DIR__ . '/../src/picker.php';
+require_once __DIR__ . '/../src/utility.php';
 
 /**
  * Adds a metabox of term meta sample.
  *
  * @param string $tax Taxonomy.
  */
-function add_term_meta_sample( string $tax ) {
+function add_term_meta_sample( string $tax ): void {
 	add_action(
 		$tax . '_edit_form_fields',
 		function ( \WP_Term $term ): void {

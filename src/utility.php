@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-09-06
+ * @version 2023-10-14
  */
 
 namespace wpinc\meta;
@@ -15,7 +15,7 @@ namespace wpinc\meta;
  * @param int                $post_id  Post ID.
  * @param string             $key      Meta key base.
  * @param array<string|null> $suffixes Meta key suffixes.
- * @return array<string|null, mixed> Values.
+ * @return array<string, mixed> Values.
  */
 function get_post_meta_suffix( int $post_id, string $key, array $suffixes ): array {
 	$vals = array();
@@ -35,8 +35,10 @@ function get_post_meta_suffix( int $post_id, string $key, array $suffixes ): arr
  */
 function get_post_meta_date( int $post_id, string $key, ?string $format = null ): string {
 	$format = $format ?? get_option( 'date_format' );  // For PHP 7.3.
+	$format = is_string( $format ) ? $format : '';
 
-	$val = mb_trim( get_post_meta( $post_id, $key, true ) );
+	$val = get_post_meta( $post_id, $key, true );
+	$val = is_string( $val ) ? mb_trim( $val ) : '';
 	return (string) mysql2date( $format, $val );
 }
 
@@ -48,7 +50,9 @@ function get_post_meta_date( int $post_id, string $key, ?string $format = null )
  * @return string[] Lines.
  */
 function get_post_meta_lines( int $post_id, string $key ): array {
-	$val  = mb_trim( get_post_meta( $post_id, $key, true ) );
+	$val = get_post_meta( $post_id, $key, true );
+	$val = is_string( $val ) ? mb_trim( $val ) : '';
+
 	$vals = explode( "\n", $val );
 	$vals = array_map( '\wpinc\meta\mb_trim', $vals );
 	$vals = array_filter( $vals );
@@ -61,7 +65,7 @@ function get_post_meta_lines( int $post_id, string $key ): array {
  * @param int                $term_id  Term ID.
  * @param string             $key      Meta key base.
  * @param array<string|null> $suffixes Meta key suffixes.
- * @return array<string|null, mixed> Values.
+ * @return array<string, mixed> Values.
  */
 function get_term_meta_suffix( int $term_id, string $key, array $suffixes ): array {
 	$vals = array();
@@ -81,8 +85,10 @@ function get_term_meta_suffix( int $term_id, string $key, array $suffixes ): arr
  */
 function get_term_meta_date( int $term_id, string $key, ?string $format = null ): string {
 	$format = $format ?? get_option( 'date_format' );  // For PHP 7.3.
+	$format = is_string( $format ) ? $format : '';
 
-	$val = mb_trim( get_term_meta( $term_id, $key, true ) );
+	$val = get_term_meta( $term_id, $key, true );
+	$val = is_string( $val ) ? mb_trim( $val ) : '';
 	return (string) mysql2date( $format, $val );
 }
 
@@ -94,7 +100,9 @@ function get_term_meta_date( int $term_id, string $key, ?string $format = null )
  * @return string[] Lines.
  */
 function get_term_meta_lines( int $term_id, string $key ): array {
-	$val  = mb_trim( get_term_meta( $term_id, $key, true ) );
+	$val = get_term_meta( $term_id, $key, true );
+	$val = is_string( $val ) ? mb_trim( $val ) : '';
+
 	$vals = explode( "\n", $val );
 	$vals = array_map( '\wpinc\meta\mb_trim', $vals );
 	$vals = array_filter( $vals );
@@ -111,22 +119,22 @@ function get_term_meta_lines( int $term_id, string $key ): array {
  * @param int           $post_id Post ID.
  * @param string        $key     Metadata key.
  * @param callable|null $filter  Filter.
- * @param mixed|null    $default Default value.
+ * @param mixed|null    $def     Default value.
  */
-function set_post_meta( int $post_id, string $key, ?callable $filter = null, $default = null ): void {
+function set_post_meta( int $post_id, string $key, ?callable $filter = null, $def = null ): void {
 	if ( ! isset( $_POST[ $key ] ) ) {  // phpcs:ignore
 		return;  // When called through bulk edit.
 	}
 	$val = $_POST[ $key ];  // phpcs:ignore
-	if ( null !== $filter && null !== $val ) {
+	if ( null !== $filter ) {
 		$val = $filter( $val );
 	}
 	if ( empty( $val ) ) {
-		if ( null === $default ) {
+		if ( null === $def ) {
 			delete_post_meta( $post_id, $key );
 			return;
 		}
-		$val = $default;
+		$val = $def;
 	}
 	update_post_meta( $post_id, $key, $val );
 }
@@ -137,22 +145,22 @@ function set_post_meta( int $post_id, string $key, ?callable $filter = null, $de
  * @param int         $post_id     Post ID.
  * @param string      $key         Metadata key.
  * @param string|null $filter_name Filter name.
- * @param mixed|null  $default     Default value.
+ * @param mixed|null  $def         Default value.
  */
-function set_post_meta_with_wp_filter( int $post_id, string $key, ?string $filter_name = null, $default = null ): void {
+function set_post_meta_with_wp_filter( int $post_id, string $key, ?string $filter_name = null, $def = null ): void {
 	if ( ! isset( $_POST[ $key ] ) ) {  // phpcs:ignore
 		return;  // When called through bulk edit.
 	}
 	$val = $_POST[ $key ];  // phpcs:ignore
-	if ( null !== $filter_name && null !== $val ) {
+	if ( null !== $filter_name ) {
 		$val = apply_filters( $filter_name, $val );
 	}
 	if ( empty( $val ) ) {
-		if ( null === $default ) {
+		if ( null === $def ) {
 			delete_post_meta( $post_id, $key );
 			return;
 		}
-		$val = $default;
+		$val = $def;
 	}
 	update_post_meta( $post_id, $key, $val );
 }
@@ -177,22 +185,22 @@ function set_post_meta_suffix( int $post_id, string $key, array $suffixes, ?call
  * @param int           $term_id Term ID.
  * @param string        $key     Metadata key.
  * @param callable|null $filter  Filter.
- * @param mixed|null    $default Default value.
+ * @param mixed|null    $def     Default value.
  */
-function set_term_meta( int $term_id, string $key, ?callable $filter = null, $default = null ): void {
+function set_term_meta( int $term_id, string $key, ?callable $filter = null, $def = null ): void {
 	if ( ! isset( $_POST[ $key ] ) ) {  // phpcs:ignore
 		return;  // When called through bulk edit.
 	}
 	$val = $_POST[ $key ];  // phpcs:ignore
-	if ( null !== $filter && null !== $val ) {
+	if ( null !== $filter ) {
 		$val = $filter( $val );
 	}
 	if ( empty( $val ) ) {
-		if ( null === $default ) {
+		if ( null === $def ) {
 			delete_term_meta( $term_id, $key );
 			return;
 		}
-		$val = $default;
+		$val = $def;
 	}
 	update_term_meta( $term_id, $key, $val );
 }
@@ -203,22 +211,22 @@ function set_term_meta( int $term_id, string $key, ?callable $filter = null, $de
  * @param int         $term_id     Term ID.
  * @param string      $key         Metadata key.
  * @param string|null $filter_name Filter name.
- * @param mixed|null  $default     Default value.
+ * @param mixed|null  $def     Default value.
  */
-function set_term_meta_with_wp_filter( int $term_id, string $key, ?string $filter_name = null, $default = null ): void {
+function set_term_meta_with_wp_filter( int $term_id, string $key, ?string $filter_name = null, $def = null ): void {
 	if ( ! isset( $_POST[ $key ] ) ) {  // phpcs:ignore
 		return;  // When called through bulk edit.
 	}
 	$val = $_POST[ $key ];  // phpcs:ignore
-	if ( null !== $filter_name && null !== $val ) {
+	if ( null !== $filter_name ) {
 		$val = apply_filters( $filter_name, $val );
 	}
 	if ( empty( $val ) ) {
-		if ( null === $default ) {
+		if ( null === $def ) {
 			delete_term_meta( $term_id, $key );
 			return;
 		}
-		$val = $default;
+		$val = $def;
 	}
 	update_term_meta( $term_id, $key, $val );
 }
@@ -297,7 +305,13 @@ function normalize_date( string $str ): string {
 function normalize_youtube_video_id( string $str ): string {
 	$pu = wp_parse_url( trim( $str ) );
 	if ( $pu ) {
+		if ( ! isset( $pu['host'] ) ) {
+			return '';
+		}
 		if ( 'youtu.be' === $pu['host'] ) {
+			if ( ! isset( $pu['path'] ) ) {
+				return '';
+			}
 			return trim( $pu['path'], '/' );
 		}
 		if ( 'www.youtube.com' === $pu['host'] ) {
@@ -312,5 +326,5 @@ function normalize_youtube_video_id( string $str ): string {
 			}
 		}
 	}
-	return $str;
+	return '';
 }

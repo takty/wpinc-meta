@@ -4,10 +4,15 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-06-29
+ * @version 2023-10-13
  */
 
 namespace wpinc\meta\sample;
+
+require_once __DIR__ . '/../src/field.php';
+require_once __DIR__ . '/../src/key-suffix.php';
+require_once __DIR__ . '/../src/picker.php';
+require_once __DIR__ . '/../src/utility.php';
 
 /**
  * Adds a metabox of post meta sample.
@@ -22,7 +27,7 @@ function add_post_meta_sample( string $pt, string $tax ): void {
 			add_meta_box(
 				'mb_post_meta_sample',
 				'Post Meta Sample',
-				function ( \WP_Post $post ) use ( $tax ) : void {
+				function ( \WP_Post $post ) use ( $tax ): void {
 					$post_id = $post->ID;
 					\wpinc\meta\add_input_to_post( $post_id, '_meta_input', 'Input' );
 					\wpinc\meta\add_textarea_to_post( $post_id, '_meta_textarea', 'Textarea' );

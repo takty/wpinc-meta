@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-08-30
+ * @version 2023-10-14
  */
 
 namespace wpinc\meta;
@@ -21,11 +21,13 @@ function get_the_sub_title( string $meta_key, $post = 0 ): string {
 		trigger_error( 'Use function \'\\wpinc\\post\\get_the_title\' instead.', E_USER_DEPRECATED );  // phpcs:ignore
 	}
 	$post = get_post( $post );
-	if ( ! $post ) {
+	if ( ! ( $post instanceof \WP_Post ) ) {
 		return '';
 	}
 	$title = get_post_meta( $post->ID, $meta_key, true );
-
+	if ( ! is_string( $title ) ) {
+		return '';
+	}
 	$ls = preg_split( '/<\s*br\s*\/?>/iu', $title );
 	if ( ! $ls ) {
 		return $title;
@@ -69,10 +71,13 @@ function get_the_sub_content( string $meta_key, $post = 0 ): string {
 		trigger_error( 'Use function \'\\wpinc\\post\\get_the_content\' instead.', E_USER_DEPRECATED );  // phpcs:ignore
 	}
 	$post = get_post( $post );
-	if ( ! $post ) {
+	if ( ! ( $post instanceof \WP_Post ) ) {
 		return '';
 	}
 	$content = get_post_meta( $post->ID, $meta_key, true );
+	if ( ! is_string( $content ) ) {
+		return '';
+	}
 	return $content;
 }
 
