@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-10-20
+ * @version 2023-12-27
  */
 
 declare(strict_types=1);
@@ -148,7 +148,7 @@ function add_related_term_select_to_post( int $post_id, string $key, string $lab
 }
 
 
-// - - - - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - -.
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -.
 
 
 /**
@@ -358,7 +358,7 @@ function output_post_term_select_row( string $label, string $key, $taxonomy_or_t
 }
 
 
-// - - - - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - -.
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -.
 
 
 /**
