@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-10-20
+ * @version 2024-02-21
  */
 
 declare(strict_types=1);
@@ -278,8 +278,8 @@ function output_post_color_picker_row( string $label, string $key, string $val, 
 	wp_enqueue_style( 'wpinc-meta' );
 	wp_add_inline_script( 'wp-color-picker', 'jQuery(document).ready(function($){$(\'.wpinc-meta-color-picker input\').wpColorPicker();});' );
 
-	$ph  = is_string( $opts['placeholder'] ) ? $opts['placeholder'] : '';
-	$def = is_string( $opts['default'] ) ? $opts['default'] : '';
+	$ph  = isset( $opts['placeholder'] ) && is_string( $opts['placeholder'] ) ? $opts['placeholder'] : '';
+	$def = isset( $opts['default'] ) && is_string( $opts['default'] ) ? $opts['default'] : '';
 	?>
 	<div class="wpinc-meta-color-picker">
 		<label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label>
@@ -304,8 +304,8 @@ function output_term_color_picker_row( string $label, string $key, string $val, 
 	wp_enqueue_style( 'wpinc-meta' );
 	wp_add_inline_script( 'wp-color-picker', 'jQuery(document).ready(function($){$(\'.wpinc-meta-color-picker-tr input\').wpColorPicker();});' );
 
-	$ph  = is_string( $opts['placeholder'] ) ? $opts['placeholder'] : '';
-	$def = is_string( $opts['default'] ) ? $opts['default'] : '';
+	$ph  = isset( $opts['placeholder'] ) && is_string( $opts['placeholder'] ) ? $opts['placeholder'] : '';
+	$def = isset( $opts['default'] ) && is_string( $opts['default'] ) ? $opts['default'] : '';
 	?>
 	<tr class="form-field wpinc-meta-color-picker-tr">
 		<th scope="row"><label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label></th>
@@ -389,7 +389,7 @@ function output_post_color_hue_picker_row( string $label, string $key, string $v
 	wp_enqueue_style( 'wpinc-meta' );
 	wp_enqueue_script( 'wpinc-meta-color-hue-picker' );
 
-	$def = is_string( $opts['default'] ) ? $opts['default'] : '';
+	$def = isset( $opts['default'] ) && is_string( $opts['default'] ) ? $opts['default'] : '';
 	?>
 	<div id="<?php echo esc_attr( "{$key}-body" ); ?>" class="wpinc-meta-color-hue-picker">
 		<label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label>
@@ -421,7 +421,7 @@ function output_term_color_hue_picker_row( string $label, string $key, string $v
 	wp_enqueue_style( 'wpinc-meta' );
 	wp_enqueue_script( 'wpinc-meta-color-hue-picker' );
 
-	$def = is_string( $opts['default'] ) ? $opts['default'] : '';
+	$def = isset( $opts['default'] ) && is_string( $opts['default'] ) ? $opts['default'] : '';
 	?>
 	<tr class="form-field wpinc-meta-color-hue-picker-tr">
 		<th scope="row"><label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label></th>
