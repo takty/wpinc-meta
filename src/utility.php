@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-10-20
+ * @version 2024-03-14
  */
 
 declare(strict_types=1);
@@ -131,7 +131,7 @@ function set_post_meta( int $post_id, string $key, ?callable $filter = null, $de
 	if ( null !== $filter ) {
 		$val = $filter( $val );
 	}
-	if ( empty( $val ) ) {
+	if ( null === $val || '' === $val ) {
 		if ( null === $def ) {
 			delete_post_meta( $post_id, $key );
 			return;
@@ -154,10 +154,10 @@ function set_post_meta_with_wp_filter( int $post_id, string $key, ?string $filte
 		return;  // When called through bulk edit.
 	}
 	$val = $_POST[ $key ];  // phpcs:ignore
-	if ( null !== $filter_name ) {
+	if ( is_string( $filter_name ) ) {
 		$val = apply_filters( $filter_name, $val );
 	}
-	if ( empty( $val ) ) {
+	if ( null === $val || '' === $val ) {
 		if ( null === $def ) {
 			delete_post_meta( $post_id, $key );
 			return;
@@ -197,7 +197,7 @@ function set_term_meta( int $term_id, string $key, ?callable $filter = null, $de
 	if ( null !== $filter ) {
 		$val = $filter( $val );
 	}
-	if ( empty( $val ) ) {
+	if ( null === $val || '' === $val ) {
 		if ( null === $def ) {
 			delete_term_meta( $term_id, $key );
 			return;
@@ -213,17 +213,17 @@ function set_term_meta( int $term_id, string $key, ?callable $filter = null, $de
  * @param int         $term_id     Term ID.
  * @param string      $key         Metadata key.
  * @param string|null $filter_name Filter name.
- * @param mixed|null  $def     Default value.
+ * @param mixed|null  $def         Default value.
  */
 function set_term_meta_with_wp_filter( int $term_id, string $key, ?string $filter_name = null, $def = null ): void {
 	if ( ! isset( $_POST[ $key ] ) ) {  // phpcs:ignore
 		return;  // When called through bulk edit.
 	}
 	$val = $_POST[ $key ];  // phpcs:ignore
-	if ( null !== $filter_name ) {
+	if ( is_string( $filter_name ) ) {
 		$val = apply_filters( $filter_name, $val );
 	}
-	if ( empty( $val ) ) {
+	if ( null === $val || '' === $val ) {
 		if ( null === $def ) {
 			delete_term_meta( $term_id, $key );
 			return;

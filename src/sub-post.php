@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-10-20
+ * @version 2024-03-13
  */
 
 declare(strict_types=1);
@@ -50,7 +50,7 @@ function the_sub_title( string $meta_key, string $before = '', string $after = '
 		trigger_error( 'Use function \'\\wpinc\\post\\the_title\' instead.', E_USER_DEPRECATED );  // phpcs:ignore
 	}
 	$title = get_the_sub_title( $meta_key, $post );
-	if ( empty( $title ) ) {
+	if ( '' === $title ) {
 		return;
 	}
 	$title = $before . $title . $after;
@@ -94,7 +94,7 @@ function the_sub_content( string $meta_key, $post = 0 ): void {
 		trigger_error( 'Use function \'\\wpinc\\post\\the_content\' instead.', E_USER_DEPRECATED );  // phpcs:ignore
 	}
 	$content = get_the_sub_content( $meta_key, $post );
-	if ( empty( $content ) ) {
+	if ( '' === $content ) {
 		return;
 	}
 	$content = filter_content( $content );

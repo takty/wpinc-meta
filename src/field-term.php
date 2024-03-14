@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-12-27
+ * @version 2024-03-13
  */
 
 declare(strict_types=1);
@@ -180,7 +180,7 @@ function output_term_checkbox_row( string $label, string $key, bool $checked = f
 		<th scope="row"><?php echo esc_html( $label ); ?></th>
 		<td><label>
 			<input type="checkbox" <?php name_id( $key ); ?> <?php echo esc_attr( $checked ? 'checked' : '' ); ?>>
-	<?php if ( ! empty( $title ) ) : ?>
+	<?php if ( '' !== $title ) : ?>
 		<?php echo esc_html( $title ); ?>
 	<?php endif; ?>
 		</label></td>

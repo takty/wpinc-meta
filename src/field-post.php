@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2023-12-27
+ * @version 2024-03-13
  */
 
 declare(strict_types=1);
@@ -219,7 +219,7 @@ function output_post_checkbox_row( string $label, string $key, bool $checked = f
 		<span class="label" for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></span>
 		<div>
 			<input <?php name_id( $key ); ?> type="checkbox" <?php echo esc_attr( $checked ? 'checked' : '' ); ?>>
-	<?php if ( ! empty( $title ) ) : ?>
+	<?php if ( '' !== $title ) : ?>
 			<label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $title ); ?></label>
 	<?php endif; ?>
 		</div>

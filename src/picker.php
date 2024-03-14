@@ -4,7 +4,7 @@
  *
  * @package Wpinc Meta
  * @author Takuto Yanagida
- * @version 2024-02-21
+ * @version 2024-03-14
  */
 
 declare(strict_types=1);
@@ -56,7 +56,7 @@ function output_post_media_picker_row( string $label, string $key, int $media_id
 	$title = '';
 	if ( $media_id ) {
 		$ais = wp_get_attachment_image_src( $media_id, 'small' );
-		$src = ( false !== $ais ) ? $ais[0] : '';
+		$src = is_array( $ais ) ? $ais[0] : '';
 		$p   = get_post( $media_id );
 		if ( $p instanceof \WP_Post ) {
 			$title = esc_html( $p->post_title );
@@ -97,7 +97,7 @@ function output_term_media_picker_row( string $label, string $key, int $media_id
 	$title = '';
 	if ( $media_id ) {
 		$ais = wp_get_attachment_image_src( $media_id, 'small' );
-		$src = ( false !== $ais ) ? $ais[0] : '';
+		$src = is_array( $ais ) ? $ais[0] : '';
 		$p   = get_post( $media_id );
 		if ( $p instanceof \WP_Post ) {
 			$title = esc_html( $p->post_title );
@@ -230,7 +230,7 @@ function output_term_date_picker_row( string $label, string $key, string $val ):
 function add_color_picker_to_post( int $post_id, string $key, string $label, array $opts = array() ): void {
 	$val = get_post_meta( $post_id, $key, true );
 	$val = is_string( $val ) ? $val : '';
-	if ( empty( $val ) && ! empty( $opts['default'] ) ) {
+	if ( '' === $val && '' !== ( $opts['default'] ?? '' ) ) {
 		$val = $opts['default'];
 	}
 	output_post_color_picker_row( $label, $key, $val, $opts );
@@ -258,7 +258,7 @@ function add_color_picker_to_post( int $post_id, string $key, string $label, arr
 function add_color_picker_to_term( int $term_id, string $key, string $label, array $opts = array() ): void {
 	$val = get_term_meta( $term_id, $key, true );
 	$val = is_string( $val ) ? $val : '';
-	if ( empty( $val ) && ! empty( $opts['default'] ) ) {
+	if ( '' === $val && '' !== ( $opts['default'] ?? '' ) ) {
 		$val = $opts['default'];
 	}
 	output_term_color_picker_row( $label, $key, $val, $opts );
@@ -342,7 +342,7 @@ function output_term_color_picker_row( string $label, string $key, string $val, 
 function add_color_hue_picker_to_post( int $post_id, string $key, string $label, array $opts = array() ): void {
 	$val = get_post_meta( $post_id, $key, true );
 	$val = is_string( $val ) ? $val : '';
-	if ( empty( $val ) && ! empty( $opts['default'] ) ) {
+	if ( '' === $val && '' !== ( $opts['default'] ?? '' ) ) {
 		$val = $opts['default'];
 	}
 	output_post_color_hue_picker_row( $label, $key, $val, $opts );
@@ -370,7 +370,7 @@ function add_color_hue_picker_to_post( int $post_id, string $key, string $label,
 function add_color_hue_picker_to_term( int $term_id, string $key, string $label, array $opts = array() ): void {
 	$val = get_term_meta( $term_id, $key, true );
 	$val = is_string( $val ) ? $val : '';
-	if ( empty( $val ) && ! empty( $opts['default'] ) ) {
+	if ( '' === $val && '' !== ( $opts['default'] ?? '' ) ) {
 		$val = $opts['default'];
 	}
 	output_term_color_hue_picker_row( $label, $key, $val, $opts );
@@ -396,7 +396,7 @@ function output_post_color_hue_picker_row( string $label, string $key, string $v
 		<div>
 			<span class="wpinc-meta-color-hue-picker-sample"></span>
 			<input type="range" class="wpinc-meta-color-hue-picker-h" min="0" max="359">
-	<?php if ( ! empty( $def ) ) : ?>
+	<?php if ( '' !== $def ) : ?>
 			<button type="button" class="button button-small wpinc-meta-color-hue-picker-default" aria-label="<?php echo esc_attr( __( 'Select default color' ) ); ?>"><?php esc_html_e( 'Default' ); ?></button>
 	<?php endif; ?>
 		</div>
@@ -429,7 +429,7 @@ function output_term_color_hue_picker_row( string $label, string $key, string $v
 			<div>
 				<span class="wpinc-meta-color-hue-picker-sample"></span>
 				<input type="range" class="wpinc-meta-color-hue-picker-h" min="0" max="359">
-	<?php if ( ! empty( $def ) ) : ?>
+	<?php if ( '' !== $def ) : ?>
 				<button type="button" class="button button-small wpinc-meta-color-hue-picker-default" aria-label="<?php echo esc_attr( __( 'Select default color' ) ); ?>"><?php esc_html_e( 'Default' ); ?></button>
 	<?php endif; ?>
 			</div>
